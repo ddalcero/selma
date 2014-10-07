@@ -1,0 +1,10 @@
+{
+	"sections" : [
+		"introduction",
+		"configuration",
+		"authentication",
+		"users",
+		"groups",
+		"suspension"
+	]
+}
