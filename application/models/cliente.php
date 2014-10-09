@@ -4,7 +4,7 @@ class Cliente {
 
 	public static function name($clt_id) {
 		$query_nombre = 'SELECT TOP 1 clt_nom from client where clt_id='.$clt_id;
-		$name=[];
+		$name=null;
 		$db=new OlgaConnection();
 		$db->query($query_nombre);
 		while ($row=$db->fetch()) 
@@ -14,7 +14,7 @@ class Cliente {
 
 	public static function get() {
 		$query_cliente = 'SELECT clt_id,clt_nom from client order by clt_nom' ;
-		$cliente=[];
+		$cliente=null;
 		$db=new OlgaConnection();
 		$db->query($query_cliente);
 		while ($row=$db->fetch()) 
