@@ -85,7 +85,7 @@
 								<span class="label label-success">Facturado</span>
 								@else
 								<span class="label label-warning">Pendiente</span>
-								<a href="#lote_modal" data-toggle="modal">Modificar</a>
+								<a href="#lote_modal{{ $lote['lot_id'] }}" data-toggle="modal">Modificar</a>
 								@endif
 							</td>
 						</tr>

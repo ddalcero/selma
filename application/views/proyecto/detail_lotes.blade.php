@@ -22,7 +22,6 @@
 								@if ($lote['fsi_id']>0)
 								{{ Label::success('Facturado') }}
 								{{ Label::normal(ViewFormat::NFL($lote['valor_uf'],2))}}
-
 								@else
 								{{ Label::warning('Pendiente')}}
 								<a href="#lote_modal{{ $lote['lot_id'] }}" data-toggle="modal">Modificar</a>

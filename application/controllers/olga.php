@@ -255,7 +255,6 @@ class Olga_Controller extends Base_Controller {
 			foreach($actividades as $actividad) {
 				$ok=Actividad::update($actividad['act_id'],$actividad['dias_fact'],$actividad['tarifa_dia']);
 			}
-
 			if ($ok) return Label::success(' Actividad OK ').' ';
 			else return Label::warning(' Actividad no actualizada! ').' ';
 		}
