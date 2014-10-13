@@ -65,5 +65,7 @@
         @section('additional_modals')
         @yield_section
 
+        @section('additional_handlebar_templates')
+        @yield_section
     </body>
 </html>

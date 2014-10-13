@@ -76,7 +76,7 @@ SELECT CASE A.tac_id
  WHEN 1 THEN 'Comercial'
  WHEN 2 THEN 'Gestiones internas' 
  WHEN 3 THEN 'Licencia'
- WHEN 4 THEN 'Comites empresa'
+ WHEN 4 THEN 'Delegado'
  WHEN 5 THEN 'Otros'
  WHEN 6 THEN 'Sin Asignacion'
  WHEN 7 THEN 'Garantia'

@@ -6,7 +6,7 @@
 @include('plugins.status_error')
 @endif
 
-@if (isset($errors) && count($errors->all()) > 0)
+@if (!is_null($errors) && count($errors->all()) > 0)
 @include('plugins.validation_errors')
 @endif
 

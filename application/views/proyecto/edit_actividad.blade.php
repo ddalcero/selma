@@ -85,6 +85,7 @@
 								<span class="label label-success">Facturado</span>
 								@else
 								<span class="label label-warning">Pendiente</span>
+								<a href="#lote_modal" data-toggle="modal">Modificar</a>
 								@endif
 							</td>
 						</tr>
@@ -93,14 +94,16 @@
 				</table>
 			</div>
 		</div>
-		@endif
 
-        @if (Sentry::user()->has_access('validar_proyecto'))
+		@foreach ($lotes as $lote)
+		@include('plugins/lote_modal')
+		@endforeach
+
+		@if (Sentry::user()->has_access('validar_proyecto'))
 		<div class="row-fluid">
 			<label class="checkbox">Actividad validada <input type="checkbox" id="validado" {{($checked)?'checked="checked"':''}}> </label>
 		</div>
 		@endif
-
 		<div class="row-fluid">
 			<div class="span4">
 				@if ($facturado>0)
@@ -113,6 +116,15 @@
 			<div id="resultadoOlga" class="span4">
 			</div>
 		</div>
+		@else
+		<div class="row-fluid">
+			<div class="span9">
+				<p>
+					<button id="bAddLote" class="btn btn-success" type="button"><i class="icon-plus-sign icon-white"></i> Añadir lote</button>
+				</p>
+			</div>
+		</div>
+		@endif
 
 		@else
 			<p class="text-warning">No se ha encontrado actividad para este proyecto en este periodo</p>
@@ -135,7 +147,7 @@
 $(document).ready(function() {
 	$('#sticker').load('/sticker/{{$spj_id}}');
 	// actualizar tarifas
-	$('input[type=text]').change(function() {
+	$('input.input-mini[type=text]').change(function() {
 		var persub,arr,uf,url;
 		persub=$(this).attr('name');
 		uf=$(this).val().replace(/\./g,'').replace(',','.');
@@ -149,6 +161,11 @@ $(document).ready(function() {
 		});		
 		$(this).val(_NFL(uf,2));
 	});
+	// Añadir lote
+	$('#bAddLote').click(function() {
+		window.location.href = "/actividad/{{ Session::get('sPeriodo') }}/{{ $spj_id }}/lote";
+	});
+
 	// recalcular
 	$('#bRecalcular').click(function() {
 		var imp,fac,tmes,actid,costomes,realizado,diasfact,tarifadia;

@@ -20,7 +20,7 @@ Class OlgaConnection {
 			);
 
 			if (!$this->mssql) {
-				throw new Exception("Error conectando con OLGA");
+				throw new Exception("Ha habido un error conectando con OLGA. Por favor avisen a sistemas si el problema persiste.");
 			}
 			@mssql_select_db(Config::get('database.connections.so-santiago.database'),$this->mssql);
 
@@ -51,6 +51,24 @@ Class OlgaConnection {
 		$this->connected=false;
 		$this->resultado=null;
 		@mssql_close($mssql,$this->mssql);
+	}
+
+	public function addlote($fecha,$monto,$spj_id) {
+
+		$stmt=mssql_init('Crear_Lote');
+
+		// Bind values
+		mssql_bind($stmt, '@monto',  $monto,  SQLFLT8,    false);
+		mssql_bind($stmt, '@fecha',  $fecha,  SQLVARCHAR, false);
+		mssql_bind($stmt, '@spj_id', $spj_id, SQLFLT8,    false);
+
+		// Execute the statement
+		$exito=mssql_execute($stmt);
+
+		// And we can free it like so:
+		mssql_free_statement($stmt);
+
+		return $exito;
 	}
 
 }

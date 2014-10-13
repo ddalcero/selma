@@ -85,7 +85,13 @@ class Main_Controller extends Base_Controller {
 			// si no puede modificar, obtenemos solo los clientes dónde tiene proyectos
 			$per_id=Sentry::user()->get('metadata.per_id');
 		}
-		$clientes=Cliente::get_actividad($year,$month,$per_id);
+		try {
+			$clientes=Cliente::get_actividad($year,$month,$per_id);
+		}
+		catch(Exception $e) {
+			Session::flash('error',$e->getMessage());
+			Return Redirect::to('main');
+		}
 
 		return View::make('cliente.index',array(
 			'clientes'=>$clientes
@@ -94,7 +100,13 @@ class Main_Controller extends Base_Controller {
 
 	public function action_factura_clientes($year,$month) {
 
-		$clientes=Cliente::get_facturacion($year,$month);
+		try {
+			$clientes=Cliente::get_facturacion($year,$month);
+		}
+		catch(Exception $e) {
+			Session::flash('error',$e->getMessage());
+			Return Redirect::to('main');
+		}
 
 		return View::make('cliente.facturacion',array(
 			'clientes'=>$clientes
@@ -115,7 +127,13 @@ class Main_Controller extends Base_Controller {
 			// si no puede modificar, obtenemos solo los clientes dónde tiene proyectos
 			$per_id=Sentry::user()->get('metadata.per_id');
 		}
-		$clientes=Cliente::get_actividad($year,$month,$per_id);
+		try {
+			$clientes=Cliente::get_actividad($year,$month,$per_id);
+		}
+		catch(Exception $e) {
+			Session::flash('error',$e->getMessage());
+			Return Redirect::to('main');
+		}
 
 		return View::make('main.realizado',array(
 			'periodos' => Periodo::get(),
@@ -135,7 +153,13 @@ class Main_Controller extends Base_Controller {
 			// si no puede modificar, obtenemos solo los clientes dónde tiene proyectos
 			$per_id=Sentry::user()->get('metadata.per_id');
 		}
-		$clientes=Cliente::get_facturacion($per_id);
+		try {
+			$clientes=Cliente::get_facturacion($per_id);
+		}
+		catch(Exception $e) {
+			Session::flash('error',$e->getMessage());
+			Return Redirect::to('main');
+		}
 
 		return View::make('main.facturacion',array(
 			'clientes' => $clientes,
@@ -161,6 +185,8 @@ class Main_Controller extends Base_Controller {
 
 		$periodo=self::get_periodo();
 		list($year,$month)=explode('/',$periodo);
+
+		// TO-DO: Obtener lista de proyectos pendientes
 
 		return View::make('main.pendientes',array(
 			'year'=>$year,

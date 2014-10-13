@@ -82,6 +82,10 @@ input:not([type="image"]), textarea {
 	margin-bottom: 5px;
 }
 
+.icon-black {
+	color: black;
+}
+
 .ico-edit {
   display: inline-block;
   width: 24px;

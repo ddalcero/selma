@@ -65,6 +65,8 @@ Route::group(array('before' => 'is_admin'), function() {
 // Acceso a REALIZADO // CON MODIFICACION
 Route::group(array('before' => 'mod_realizado'), function() {
 	Route::get('actividad/(:num)/(:num)/(:num)/edit', array('as'=>'actividad_edit','uses'=>'olga@actividad_edit'));
+	// actividad/2014/9/1127/lote
+	Route::get('actividad/(:num)/(:num)/(:num)/lote', array('as'=>'actividad_addlote','uses'=>'olga@actividad_addlote'));
 });
 
 // Acceso a REALIZADO
@@ -89,10 +91,10 @@ Route::group(array('before' => 'realizado'), function() {
 	Route::post('sticker/(:num?)',array('uses'=>'sticker@new'));
 	Route::put('sticker/(:num)',array('uses'=>'sticker@update'));
 	Route::delete('sticker/(:num)',array('uses'=>'sticker@delete'));
-
-	Route::get('lotes/(:num?)', array('as'=>'proyecto_facturacion','uses'=>'olga@proyecto_facturacion'));
-	Route::get('facturar/(:num?)', array('as'=>'facturar_lote','uses'=>'olga@facturar_lote'));
-
+	// FACTURACION
+	Route::get('lotes/(:num)', array('as'=>'proyecto_facturacion','uses'=>'olga@proyecto_facturacion'));
+	Route::get('facturar/(:num)', array('as'=>'facturar_lote','uses'=>'olga@facturar_lote'));
+	Route::post('lote/(:num)',array('as'=>'modificar_lote','uses'=>'olga@modificar_lote'));
 });
 
 // Gestión Facturación Software Factory

@@ -53,9 +53,26 @@ EOT;
 	}
 
 	// actualiza el importe de un lote, dado su ID
-	public static function update($lot_id,$total) {
-		$query="update lot set lot_montant_euro=".$total." where lot_id=".$lot_id;
+	public static function update($lot_id,$total,$fecha=null,$nombre=null) {
+		$appendSql=" ";
+		if ($fecha!=null) {
+			$appendSql=",lot_date_previ_fac='".ViewFormat::dateToDB($fecha)."'";
+		}
+		if ($nombre!=null) {
+			$nombre=str_replace(array('\'','"','<','>','\\','(',')','?'),'',$nombre);
+			$appendSql.=",lot_libelle='".$nombre."'";
+		}
+		$query="update lot set lot_montant_euro=".intval($total).$appendSql." where lot_id=".$lot_id;
 		$db=new OlgaConnection();
 		return $db->update($query);
 	}
+
+
+
+	// añade un lote
+	public static function addlote($fecha,$monto,$spj_id) {
+		$db=new OlgaConnection();
+		return $db->addlote($fecha,$monto,$spj_id);
+	}
+
 }
