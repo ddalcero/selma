@@ -91,6 +91,10 @@ class Olga_Controller extends Base_Controller {
 				$total['total_uf']+=$lot['lot_montant_uf'];
 			});
 
+			Asset::add('jqueryui', 'js/jquery-ui-1.10.3.custom.js','jquery');
+			Asset::add('jqueryui-css','css/ui-lightness/jquery-ui-1.10.3.custom.min.css','jqueryui');
+			Asset::add('jqueryui-i18n','js/jquery.ui.datepicker-es.js','jqueryui');
+
 			return View::make('proyecto.lotes',array(
 				'lotes'=>$lotes,
 				'proyecto'=>$proyecto,
@@ -284,12 +288,13 @@ class Olga_Controller extends Base_Controller {
 		$input=Input::get();
 
 		$importe=ViewFormat::NFFS($input['importe_clp']);
-		$fecha=$input['fechaLote'];
+		$fechaLote="fechaLote".strval($lot_id);
+		$fecha=$input[$fechaLote];
 		$libelle=$input['libelle'];
 
 		Lote::update($lot_id,$importe,$fecha,$libelle);
 
-		// return Response::json($input);
+		//return Response::json($input);
 		return Redirect::to($input['backUrl']);
 	}
 

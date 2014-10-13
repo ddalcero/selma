@@ -25,6 +25,7 @@
 
 								@else
 								{{ Label::warning('Pendiente')}}
+								<a href="#lote_modal{{ $lote['lot_id'] }}" data-toggle="modal">Modificar</a>
 								@endif
 							</td>
 						</tr>
@@ -41,6 +42,9 @@
 					</table>
 			</div>
 		</div>
+		@foreach ($lotes as $lote)
+		@include('plugins/lote_modal')
+		@endforeach		
 		@else
 			<p class="text-warning">No se han encontrado lotes de facturación en este periodo</p>
 		@endif
