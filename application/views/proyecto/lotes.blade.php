@@ -19,15 +19,12 @@
 
 		<hr/>
 
-
 		@include('proyecto/detail_lotes')
 
 		<br/>
-
 		<p>
 			{{ HTML::link('main/facturacion','Volver a proyectos',array('class'=>'btn btn-primary')) }}
 		</p>
-
 	</div>
 </div>
 @endsection

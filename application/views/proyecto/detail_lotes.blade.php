@@ -24,7 +24,7 @@
 								{{ Label::normal(ViewFormat::NFL($lote['valor_uf'],2))}}
 								@else
 								{{ Label::warning('Pendiente')}}
-								<a href="#lote_modal{{ $lote['lot_id'] }}" data-toggle="modal">Modificar</a>
+								{{ Button::mini_warning_link('#lote_modal'.$lote['lot_id'],'',array('data-toggle'=>'modal'))->with_icon('pencil') }}
 								@endif
 							</td>
 						</tr>
@@ -39,11 +39,14 @@
 						</tr>
 					</tfoot>
 					</table>
+					{{ Button::small_danger_link('#lote_ajuste_modal','Añadir Lotes de Ajuste',array('data-toggle'=>'modal'))->with_icon('plus'); }}
+					<hr/>
 			</div>
 		</div>
 		@foreach ($lotes as $lote)
 		@include('plugins/lote_modal')
-		@endforeach		
+		@endforeach
+		@include('plugins/lote_ajuste_modal')
 		@else
 			<p class="text-warning">No se han encontrado lotes de facturación en este periodo</p>
 		@endif

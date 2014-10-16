@@ -67,8 +67,6 @@ EOT;
 		return $db->update($query);
 	}
 
-
-
 	// añade un lote
 	public static function addlote($fecha,$monto,$spj_id) {
 		$db=new OlgaConnection();

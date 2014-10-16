@@ -297,4 +297,18 @@ class Olga_Controller extends Base_Controller {
 		return Redirect::to($input['backUrl']);
 	}
 
+	public function post_add_lote_ajuste() {
+		$input=Input::get();
+
+		$fecha=$input['fechaLoteAjuste'];
+		$importe=ViewFormat::NFFS($input['importe_clp']);
+		$spj_id=$input['spj_id'];
+
+		Lote::addlote($fecha,$importe,$spj_id);
+
+		//return Response::json(array($fecha,$importe,$spj_id));
+		return Redirect::to($input['backUrl']);
+	}
+
+
 }
