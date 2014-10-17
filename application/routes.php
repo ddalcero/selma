@@ -27,11 +27,15 @@
 		return Response::json($input);
 	});
 
+
 // end testing only
 
 Route::any('/', function() {
 	return View::make('index');
 });
+
+// UfDia
+Route::get('ufdia/(:num?)/(:num?)/(:num?)',array('uses'=>'ufdia@uf')); 
 
 // Login & Register
 Route::get('login', array('as'=>'login','uses'=>'access@login'));
