@@ -286,9 +286,12 @@ class Olga_Controller extends Base_Controller {
 	public function post_modificar_lote($lot_id) {
 		$input=Input::get();
 
-		$importe=ViewFormat::NFFS($input['importe_clp']);
+		$importeClp="importe_clp".strval($lot_id);
+		$importe=ViewFormat::NFFS($input[$importeClp]);
+
 		$fechaLote="fechaLote".strval($lot_id);
 		$fecha=$input[$fechaLote];
+
 		$libelle=$input['libelle'];
 
 		Lote::update($lot_id,$importe,$fecha,$libelle);

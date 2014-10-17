@@ -6,7 +6,7 @@
     <div class="modal-body">
         <form id="lote_modal_form{{ $lote['lot_id'] }}" method="POST" action="/lote/{{ $lote['lot_id'] }}" class="form-inline">
             <input type="hidden" name="backUrl" id="backUrl" value="{{ URI::current() }}">
-            <input type="hidden" name="uf" id="uf" value="">
+            <input type="hidden" name="uf{{ $lote['lot_id'] }}" id="uf{{ $lote['lot_id'] }}" value="">
             <fieldset>
             <!-- Nombre lote -->
             <div class="control-group">
@@ -21,11 +21,11 @@
               <div class="controls">
                 <div class="input-prepend">
                   <span class="add-on">CLP $</span>
-                  <input id="importe_clp" name="importe_clp" class="input-medium" type="text" value="{{ ViewFormat::NFL($lote['lot_montant_euro']) }}" required="">
+                  <input id="importe_clp{{ $lote['lot_id'] }}" name="importe_clp{{ $lote['lot_id'] }}" class="input-medium" type="text" value="{{ ViewFormat::NFL($lote['lot_montant_euro']) }}" required="">
                 </div>
                 <div class="input-prepend">
                   <span class="add-on">UF</span>
-                  <input id="importe_uf" name="importe_uf" class="input-small" type="text" value="" required="">
+                  <input id="importe_uf{{ $lote['lot_id'] }}" name="importe_uf{{ $lote['lot_id'] }}" class="input-small" type="text" value="" required="">
                 </div>
               </div>
             </div>
@@ -47,11 +47,11 @@
 @section('js')
 @parent
 
-function getUF(fecha) { 
+function getUF{{ $lote['lot_id'] }}(fecha) { 
   var parts = fecha.split('-');
   url='/ufdia/'+parts[2]+'/'+parts[1]+'/'+parts[0];
   ajaxGet(url,function(msg){
-    $("#lote_modal_form{{ $lote['lot_id'] }} input[name=uf]").val(msg);
+    $("#uf{{ $lote['lot_id'] }}").val(msg);
   });
 }
 
@@ -61,25 +61,24 @@ $(document).ready(function() {
         changeMonth: true,
         numberOfMonths: 1,
         onSelect: function(dateText) {
-          getUF(dateText);
+          getUF{{ $lote['lot_id'] }}(dateText);
         }
     });
-    getUF($("#fechaLote{{ $lote['lot_id'] }}").val());
+    getUF{{ $lote['lot_id'] }}($("#fechaLote{{ $lote['lot_id'] }}").val());
 
-    $("#lote_modal_form{{ $lote['lot_id'] }} input[name=importe_uf]").change(function(){
-      var uf=$("#lote_modal_form{{ $lote['lot_id'] }} input[name=uf]").val();
-      var importe_uf=$("#lote_modal_form{{ $lote['lot_id'] }} input[name=importe_uf]").val().replace(/\./g,'').replace(',','.');
-      $("#lote_modal_form{{ $lote['lot_id'] }} input[name=importe_clp]").val(_NFL(uf*importe_uf,0));
+    $("#importe_uf{{ $lote['lot_id'] }}").change(function(){
+      var uf=$("#uf{{ $lote['lot_id'] }}").val();
+      var importe_uf=$("#importe_uf{{ $lote['lot_id'] }}").val().replace(/\./g,'').replace(',','.');
+      $("#importe_clp{{ $lote['lot_id'] }}").val(_NFL(uf*importe_uf,0));
     });
 
-    $("#lote_modal_form{{ $lote['lot_id'] }} input[name=importe_clp]").change(function(){
-      var uf=$("#lote_modal_form{{ $lote['lot_id'] }} input[name=uf]").val();
-      var importe_clp=$("#lote_modal_form{{ $lote['lot_id'] }} input[name=importe_clp]").val().replace(/\./g,'').replace(',','.');
-      $("#lote_modal_form{{ $lote['lot_id'] }} input[name=importe_uf]").val(_NFL(importe_clp/uf,2));
+    $("#importe_clp{{ $lote['lot_id'] }}").change(function(){
+      var uf=$("#uf{{ $lote['lot_id'] }}").val();
+      var importe_clp=$("#importe_clp{{ $lote['lot_id'] }}").val().replace(/\./g,'').replace(',','.');
+      $("#importe_uf{{ $lote['lot_id'] }}").val(_NFL(importe_clp/uf,2));
     });
 
-    $("#lote_modal_form{{ $lote['lot_id'] }} input[name=importe_clp]").change();
-
+    $("#importe_clp{{ $lote['lot_id'] }}").change();
 
 });
 @endsection
