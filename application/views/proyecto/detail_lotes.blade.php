@@ -25,6 +25,7 @@
 								@else
 								{{ Label::warning('Pendiente')}}
 								{{ Button::mini_warning_link('#lote_modal'.$lote['lot_id'],'',array('data-toggle'=>'modal'))->with_icon('pencil') }}
+								{{ Button::mini_danger_link('/lote/'.$lote['lot_id'],'',array('data-method'=>'delete'))->with_icon('trash') }}
 								@endif
 							</td>
 						</tr>

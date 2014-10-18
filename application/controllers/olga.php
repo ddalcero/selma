@@ -300,6 +300,17 @@ class Olga_Controller extends Base_Controller {
 		return Redirect::to($input['backUrl']);
 	}
 
+	public function delete_eliminar_lote($lot_id) {
+		try {
+			Lote::delete($lot_id);
+			Session::flash('success','Eliminando lote '.$lot_id);
+		}
+		catch (Exception $e) {
+			Session::flash('error','Error eliminando el lote '.$lot_id.': '.$e->getMessage());
+		}
+		return Redirect::back();
+	}
+
 	public function post_add_lote_ajuste() {
 		$input=Input::get();
 

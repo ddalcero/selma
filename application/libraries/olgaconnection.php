@@ -14,7 +14,7 @@ Class OlgaConnection {
 	public function connect() {
 		if (!$this->connected) {
 			$this->mssql = @mssql_connect (
-				'so-santiago.santiago.cvteam.cl',
+				Config::get('database.connections.so-santiago.host'),
 				Config::get('database.connections.so-santiago.username'),
 				Config::get('database.connections.so-santiago.password')
 			);
@@ -31,6 +31,10 @@ Class OlgaConnection {
 
 	public function query($query) {
 		$this->resultado = @mssql_query($query,$this->mssql);
+	}
+
+	public function result() {
+		return $this->resultado;
 	}
 
 	public function all() {

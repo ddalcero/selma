@@ -99,6 +99,7 @@ Route::group(array('before' => 'realizado'), function() {
 	Route::get('lotes/(:num)', array('as'=>'proyecto_facturacion','uses'=>'olga@proyecto_facturacion'));
 	Route::get('facturar/(:num)', array('as'=>'facturar_lote','uses'=>'olga@facturar_lote'));
 	Route::post('lote/(:num)',array('as'=>'modificar_lote','uses'=>'olga@modificar_lote'));
+	Route::delete('lote/(:num)',array('as'=>'eliminar_lote','uses'=>'olga@eliminar_lote'));
 	Route::post('lote/ajuste',array('as'=>'add_lote_ajuste','uses'=>'olga@add_lote_ajuste'));
 });
 
