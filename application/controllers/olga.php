@@ -6,8 +6,11 @@ class Olga_Controller extends Base_Controller {
 
 	public function get_actividad_view($year,$month,$spj_id=0) {
 		try {
-			$cliente=Cliente::name(Session::get('sCliente'));
 			$valores=Valor::periodo($year,$month)->first();
+			if (!$valores) {
+				throw new Exception("Valores de UF y jornadas no definidos en el periodo.", 1);
+			}
+			$cliente=Cliente::name(Session::get('sCliente'));
 			if ($spj_id!=0) {
 				$actividad=Actividad::get(array('spj_id'=>$spj_id,'month'=>$month,'year'=>$year));
 				$edit_link=URL::to_route('actividad_edit',array($year,$month,$spj_id));

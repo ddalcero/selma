@@ -73,15 +73,13 @@ EOT;
 		return $db->addlote($fecha,$monto,$spj_id);
 	}
 
-	// Listado de lotes por un subproyecto
+	// elimina un lote
 	public static function delete($lot_id) {
-
 		$query_lote="delete from lot where lot_id = ".$lot_id;
 
 		$db=new OlgaConnection();
 		$db->query($query_lote);
 		return $db->result();
-
 	}
 
 }
