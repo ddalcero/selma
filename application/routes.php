@@ -6,7 +6,8 @@
 |--------------------------------------------------------------------------
 */
 
-// testing only
+// testing only - only for admins
+Route::group(array('before' => 'is_admin'), function() {
 	Route::get('dumpval',function(){
 		$salario2=new Salario(array(
 				'base'=>1155221,
@@ -26,27 +27,28 @@
 		$input=Input::get();
 		return Response::json($input);
 	});
-
-
+});
 // end testing only
 
 Route::any('/', function() {
 	return View::make('index');
 });
 
-// UfDia
-Route::get('ufdia/(:num?)/(:num?)/(:num?)',array('uses'=>'ufdia@uf')); 
 
-// Login & Register
+// Login
 Route::get('login', array('as'=>'login','uses'=>'access@login'));
-Route::get('register', array('as'=>'register','uses'=>'access@register'));
 Route::get('logout', array('as'=>'logout','uses'=>'access@logout'));
 Route::post('login', array('uses'=>'access@login'));
-Route::post('register', array('uses'=>'access@register'));
+
+// REGISTER IS NOT IN USER ANYMORE
+//Route::get('register', array('as'=>'register','uses'=>'access@register'));
+//Route::post('register', array('uses'=>'access@register'));
 
 Route::group(array('before' => 'sentry'), function() {
 	Route::get('password', array('uses'=>'access@password'));
 	Route::put('password', array('uses'=>'access@password'));
+	// UfDia
+	Route::get('ufdia/(:num?)/(:num?)/(:num?)',array('uses'=>'ufdia@uf')); 
 });
 
 // ACCESO A IS_ADMIN
@@ -101,6 +103,8 @@ Route::group(array('before' => 'realizado'), function() {
 	Route::post('lote/(:num)',array('as'=>'modificar_lote','uses'=>'olga@modificar_lote'));
 	Route::delete('lote/(:num)',array('as'=>'eliminar_lote','uses'=>'olga@eliminar_lote'));
 	Route::post('lote/ajuste',array('as'=>'add_lote_ajuste','uses'=>'olga@add_lote_ajuste'));
+	// correo@get
+	Route::get('lote/mail/(:num)', array('uses'=>'facturar@correo'));
 });
 
 // Gestión Facturación Software Factory
@@ -139,7 +143,9 @@ Route::group(array('before' => 'candidatos'), function() {
 });
 
 Route::controller('main');
-Route::controller('llamada');
+
+// OLD - not in use anymore
+//Route::controller('llamada');
 
 Route::filter('sentry', function() {
 	if (!Sentry::check()) return Redirect::to('login');
@@ -224,8 +230,8 @@ Route::filter('auth', function() {
 View::composer(array('layouts/main', 'layouts/main_fluid'), function($view) {
 	Asset::add('jquery', 'js/jquery-1.8.0.min.js');
 	Asset::add('scripts', 'js/scripts.js', 'jquery');
-//	Asset::add('handlebars', 'js/handlebars.js');
 
+//	Asset::add('handlebars', 'js/handlebars.js');
 //	Asset::container('bootstrapper')->styles();
 //	Asset::container('bootstrapper')->scripts();
 

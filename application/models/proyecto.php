@@ -63,14 +63,6 @@ FROM
  ss_projet s, projet p
 WHERE
  s.prj_id = p.prj_id $whereCli
- and s.spj_id in (
-  SELECT S.spj_id
-  FROM activite A, feuille_temps F, ss_projet S
-  WHERE A.fdt_id = F.fdt_id
-   AND A.tac_id != 40 AND A.tac_id != 41
-   AND F.fdt_ok_da = 1
-   AND A.spj_id = S.spj_id
- )
 order by s.prj_id, p.clt_id 
 EOT;
 

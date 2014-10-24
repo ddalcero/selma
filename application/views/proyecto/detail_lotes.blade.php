@@ -1,6 +1,6 @@
 		@if (count($lotes)>0)
 		<div class="row-fluid">
-			<div class="span10">
+			<div class="span12">
 				<table class="table-striped table-hover table-condensed table">
 					<thead>
 						<th>#</th>
@@ -25,7 +25,10 @@
 								@else
 								{{ Label::warning('Pendiente')}}
 								{{ Button::mini_warning_link('#lote_modal'.$lote['lot_id'],'',array('data-toggle'=>'modal'))->with_icon('pencil') }}
+								@if (Sentry::user()->has_access('mod_realizado'))
 								{{ Button::mini_danger_link('/lote/'.$lote['lot_id'],'',array('data-method'=>'delete'))->with_icon('trash') }}
+								@endif
+								{{ Button::mini_link('/lote/mail/'.$lote['lot_id'],'Solicitar')->with_icon('certificate') }}
 								@endif
 							</td>
 						</tr>

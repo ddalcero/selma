@@ -42,5 +42,6 @@ return array(
 	'jload' => array('auto'=>true),
 	'fpdf' => array('auto' => true),
 	'laravel-phpexcel' => array('auto' => true),
+	'swiftmailer' => array('auto'=>true)
 
 );

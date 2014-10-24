@@ -52,6 +52,30 @@ EOT;
 
 	}
 
+	// Detalle de un lote
+	public static function getLote($lot_id) {
+
+		$query_lote=<<<EOT
+select l.lot_id
+	,l.lot_libelle
+	,l.lot_date_previ_fac
+	,l.lot_montant_euro
+	,l.spj_id
+	,coalesce(l.fsi_id,0) as fsi_id
+	,coalesce(c.fcc_date,l.lot_date_previ_fac,0) as lot_fecha
+from lot l
+left join facture_sii s on l.fsi_id=s.fsi_id
+left join facture_clt c on s.fcc_id=c.fcc_id
+where 
+	l.lot_id= $lot_id
+EOT;
+
+		$db=new OlgaConnection();
+		$db->query($query_lote);
+		return $db->all();
+
+	}
+
 	// actualiza el importe de un lote, dado su ID
 	public static function update($lot_id,$total,$fecha=null,$nombre=null) {
 		$appendSql=" ";
