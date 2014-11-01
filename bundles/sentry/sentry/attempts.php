@@ -104,8 +104,13 @@ class Sentry_Attempts
 			}
 		}
 
-		$query = DB::connection(static::$db_instance)
-			->table(static::$table_suspend);
+		try {
+			$query = DB::connection(static::$db_instance)
+					->table(static::$table_suspend);
+		}
+		catch (Exception $e) {
+			throw new \Exception('Unable to connect to database: '.$e->getMessage());
+		}
 
 		if ($this->login_id)
 		{

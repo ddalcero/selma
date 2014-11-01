@@ -57,6 +57,10 @@ class Access_Controller extends Base_Controller {
 			}
 			Return Redirect::to('/'); //->with_errors($errors);
 		}
+		catch (Exception $e) {
+			Session::flash('error','Database no disponible. Error: '.$e->getMessage());
+			Return Redirect::to('login'); //->with_errors($errors);
+		}
 		catch (Sentry\SentryException $e) {
 //			$errors = new Laravel\Messages();
 //			$errors->add('sentry', $e->getMessage());
