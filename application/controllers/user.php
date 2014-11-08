@@ -37,7 +37,14 @@ class User_Controller extends Base_Controller {
 				}
 			}
 
-			$lista_personal=Persona::get(array('per_id','per_prenom+\' \'+per_nom as per_libelle'));
+			try {
+				$lista_personal=Persona::get(array('per_id','per_prenom+\' \'+per_nom as per_libelle'));
+			}
+			catch (Exception $e) {
+				Session::flash('error',$e->getMessage());
+				Return Redirect::to('main');
+			}
+
 			$select_personal[0]="-";
 			foreach ($lista_personal as $personal) $select_personal[$personal['per_id']]=$personal['per_libelle'];
 

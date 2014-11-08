@@ -2,6 +2,6 @@
 
 return array(
     'title' => 'Selma Extranet',
-    'version' => '10.2014',
+    'version' => '11.1.2014',
     'copyright' => 'SII Group'
 );

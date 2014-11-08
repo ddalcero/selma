@@ -1,3 +1,5 @@
 {
-	"taylorotwell/laravel-oauth2": "0.2.*"
+	"require": {
+		"unikent/curl": "dev-master"
+	}
 }

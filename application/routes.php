@@ -27,6 +27,9 @@ Route::group(array('before' => 'is_admin'), function() {
 		$input=Input::get();
 		return Response::json($input);
 	});
+	Route::any('curl',function(){
+		return Mavenlink::Test();
+	});
 });
 // end testing only
 
