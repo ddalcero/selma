@@ -212,6 +212,7 @@ return array(
 			'rrhh',
 			'candidatos',
 			'factory',
+			'facturacion_todos',
 		),
 
 	),

@@ -27,7 +27,7 @@ class Group_Controller extends Base_Controller {
 			$users_in_group = $group->users(array('id','username'));
 
 			// take the differences
-			$users_not = array_diff_assoc($users_all,$users_in_group);
+			$users_not = array_diff_assoc($users_all[0],$users_in_group[0]);
 
 			// permissions
 			$all_rules=\Sentry\Sentry_Rules::fetch_rules();
