@@ -145,7 +145,7 @@ class Main_Controller extends Base_Controller {
 	public function action_facturacion() {
 
 		// chequeamos si el usuario puede modificar
-		if (Sentry::user()->has_access('mod_realizado')) {
+		if (Sentry::user()->has_access('facturacion_todos')) {
 			// si puede modificar, obtenemos todos los clientes (per_id = 0)
 			$per_id=0;
 		}
