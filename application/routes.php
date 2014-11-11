@@ -102,6 +102,7 @@ Route::group(array('before' => 'realizado'), function() {
 	Route::delete('sticker/(:num)',array('uses'=>'sticker@delete'));
 	// FACTURACION
 	Route::get('lotes/(:num)', array('as'=>'proyecto_facturacion','uses'=>'olga@proyecto_facturacion'));
+	Route::get('lote/new/(:num)', array('as'=>'nuevo_lote','uses'=>'olga@add_lote'));
 	Route::get('facturar/(:num)', array('as'=>'facturar_lote','uses'=>'olga@facturar_lote'));
 	Route::post('lote/(:num)',array('as'=>'modificar_lote','uses'=>'olga@modificar_lote'));
 	Route::delete('lote/(:num)',array('as'=>'eliminar_lote','uses'=>'olga@eliminar_lote'));

@@ -327,5 +327,16 @@ class Olga_Controller extends Base_Controller {
 		return Redirect::to($input['backUrl']);
 	}
 
+	public function get_add_lote($spj_id) {
+		$fecha=date('d-m-Y');
+		try {
+			Lote::addlote($fecha,0,$spj_id);
+			Session::flash('success','Lote creado correctamente.');
+		}
+		catch (Exception $e) {
+			Session::flash('error','Error creando el lote: '.$e->getMessage());
+		}
+		return Redirect::back();
+	}
 
 }
