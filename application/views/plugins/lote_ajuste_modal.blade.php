@@ -6,7 +6,6 @@
     <div class="modal-body">
         <form id="lote_ajuste_modal_form" method="POST" action="/lote/ajuste" class="form-inline">
             <input type="hidden" name="spj_id" id="spj_id" value="{{ $spj_id }}">
-            <input type="hidden" name="backUrl" id="backUrl" value="{{ URI::current() }}">
             <fieldset>
             <!-- Importe -->
             <div class="control-group">

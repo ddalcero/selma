@@ -113,21 +113,6 @@ class Olga_Controller extends Base_Controller {
 		}
 	}
 
-	public function get_actividad_addlote($year,$month,$spj_id) {
-		try {
-			// date("Y-m-t", strtotime($a_date));
-			$fecha=date("t-m-Y",strtotime($year.'-'.$month.'-'.'25'));
-
-			Lote::addlote($fecha,0,$spj_id);
-
-			Return Redirect::to('/actividad/'.$year.'/'.$month.'/'.$spj_id.'/edit'); //->with_errors($errors);
-		}
-		catch (Exception $e) {
-			Session::flash('error','Error: '.$e->getMessage());
-			return Redirect::to('main');
-		}
-	}
-
 	public function get_actividad_edit($year,$month,$spj_id) {
 		try {
 			$valores=Valor::periodo($year,$month)->first();
@@ -297,10 +282,16 @@ class Olga_Controller extends Base_Controller {
 
 		$libelle=$input['libelle'];
 
-		Lote::update($lot_id,$importe,$fecha,$libelle);
-
+		try {
+			Lote::update($lot_id,$importe,$fecha,$libelle);
+			Session::flash('success','Lote '.$lot_id.' actualizado.');
+		}
 		//return Response::json($input);
-		return Redirect::to($input['backUrl']);
+		catch (Exception $e) {
+			Session::flash('error','Error actualizando el lote '.$lot_id.': '.$e->getMessage());
+		}
+		return Redirect::back();
+
 	}
 
 	public function delete_eliminar_lote($lot_id) {
@@ -314,6 +305,7 @@ class Olga_Controller extends Base_Controller {
 		return Redirect::back();
 	}
 
+	// Añade un lote de ajuste (post)
 	public function post_add_lote_ajuste() {
 		$input=Input::get();
 
@@ -321,14 +313,32 @@ class Olga_Controller extends Base_Controller {
 		$importe=ViewFormat::NFFS($input['importe_clp']);
 		$spj_id=$input['spj_id'];
 
-		Lote::addlote($fecha,$importe,$spj_id);
+		try {
+			Lote::addlote($fecha,$importe,$spj_id);
+			Session::flash('success','Lotes creados correctamente.');
+		}
+		catch (Exception $e) {
+			Session::flash('error','Error creando lotes de ajuste: '.$e->getMessage());
+		}
 
 		//return Response::json(array($fecha,$importe,$spj_id));
-		return Redirect::to($input['backUrl']);
+		return Redirect::back();
 	}
 
+	// Añade un lote a un sub-proyecto en la fecha actual
 	public function get_add_lote($spj_id) {
 		$fecha=date('d-m-Y');
+		return self::addLote($fecha,$spj_id);
+	}
+
+	// Añade un lote a un subproyecto en un periodo determinado
+	public function get_actividad_addlote($year,$month,$spj_id) {
+		$fecha=date("t-m-Y",strtotime($year.'-'.$month.'-'.'25'));
+		return self::addLote($fecha,$spj_id);
+	}
+
+	// Añade un lote - requiere fecha
+	private static function addLote($fecha,$spj_id) {
 		try {
 			Lote::addlote($fecha,0,$spj_id);
 			Session::flash('success','Lote creado correctamente.');
@@ -337,6 +347,6 @@ class Olga_Controller extends Base_Controller {
 			Session::flash('error','Error creando el lote: '.$e->getMessage());
 		}
 		return Redirect::back();
-	}
+	}	
 
 }

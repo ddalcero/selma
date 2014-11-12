@@ -5,7 +5,6 @@
     </div>
     <div class="modal-body">
         <form id="lote_modal_form{{ $lote['lot_id'] }}" method="POST" action="/lote/{{ $lote['lot_id'] }}" class="form-inline">
-            <input type="hidden" name="backUrl" id="backUrl" value="{{ URI::current() }}">
             <input type="hidden" name="uf{{ $lote['lot_id'] }}" id="uf{{ $lote['lot_id'] }}" value="">
             <fieldset>
             <!-- Nombre lote -->
