@@ -29,6 +29,8 @@ class Main_Controller extends Base_Controller {
 
 	public function action_updateuf() {
 
+		require 'vendor/autoload.php';
+
 		$max=strtotime(UfDia::max('pday'));
 
 		$maxY=date('Y',$max);
@@ -40,36 +42,45 @@ class Main_Controller extends Base_Controller {
 			$year=$maxY;
 
 		$url="http://www.sii.cl/pagina/valores/uf/uf".$year.".htm";
-		$contents = file_get_contents($url);
-		libxml_use_internal_errors(true);
 
-		$DOM = new DOMDocument();
-		$DOM->loadHTML($contents);
+		try {
+			$curl=new Curl;
+			$contents=$curl->simple_get($url);
+			//$contents = file_get_contents($url);
 
-		$tabla = $DOM->getElementsByTagName('td');
-		$dia=1;
-		$mes=1;
-		$grabados=0;
-		foreach ($tabla as $valor) {
-			if (checkdate($mes, $dia, $year)) {
-				$uf=Viewformat::NFFS($valor->nodeValue);
-				$pday=$year.'-'.$mes.'-'.$dia;
-				$pdaydate=strtotime($pday);
-				if ($uf>0 && $pdaydate>$max) {
-					UfDia::create(array(
-						'pday'=>$pday,
-						'uf'=>$uf
-					));
-					$grabados++;
+			libxml_use_internal_errors(true);
+
+			$DOM = new DOMDocument();
+			$DOM->loadHTML($contents);
+
+			$tabla = $DOM->getElementsByTagName('td');
+			$dia=1;
+			$mes=1;
+			$grabados=0;
+			foreach ($tabla as $valor) {
+				if (checkdate($mes, $dia, $year)) {
+					$uf=Viewformat::NFFS($valor->nodeValue);
+					$pday=$year.'-'.$mes.'-'.$dia;
+					$pdaydate=strtotime($pday);
+					if ($uf>0 && $pdaydate>$max) {
+						UfDia::create(array(
+							'pday'=>$pday,
+							'uf'=>$uf
+						));
+						$grabados++;
+					}
+				}
+				$mes++;
+				if ($mes==13) {
+					$mes=1;
+					$dia++;
 				}
 			}
-			$mes++;
-			if ($mes==13) {
-				$mes=1;
-				$dia++;
-			}
+			Session::flash('success','Valores actualizados: '.$grabados);
 		}
-		Session::flash('success','Valores actualizados: '.$grabados);
+		catch(Exception $e) {
+			Session::flash('error','Error: '.$e->getMessage());
+		}
 		Return Redirect::to('main');
 
 	}
