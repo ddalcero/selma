@@ -33,10 +33,15 @@ Route::group(array('before' => 'is_admin'), function() {
 });
 // end testing only
 
+Route::any('/', function() {
+	return View::make('maintenance');
+});
+
+/*
+
 // Home Page
 Route::any('/', function() {
-	// return View::make('index');
-	return View::make('maintenance');
+	return View::make('index');
 });
 
 
@@ -191,6 +196,8 @@ Route::filter('factory',function() {
 	if (!Sentry::check()) return Redirect::to('login');
 	if (!Sentry::user()->has_access('factory')) return Redirect::to('main');
 });
+
+Maintenance mode */
 
 /*
 |--------------------------------------------------------------------------
