@@ -47,7 +47,7 @@
             @endif
             @yield('content')
             <footer>
-                <p>&copy; <span class="brand">{{ Config::get('project.copyright') }}</span> {{ date('Y'); }} (version: {{ Config::get('project.version') }})</p>
+                <p>&copy; <span class="brand">{{ Config::get('project.copyright') }}</span> 2013-{{ date('Y'); }} (version: {{ Config::get('project.version') }})</p>
             </footer>
         </div> <!-- /container -->
 

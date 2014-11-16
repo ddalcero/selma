@@ -33,8 +33,10 @@ Route::group(array('before' => 'is_admin'), function() {
 });
 // end testing only
 
+// Home Page
 Route::any('/', function() {
-	return View::make('index');
+	// return View::make('index');
+	return View::make('maintenance');
 });
 
 
