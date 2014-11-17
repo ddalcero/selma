@@ -280,10 +280,14 @@ class Olga_Controller extends Base_Controller {
 		$fechaLote="fechaLote".strval($lot_id);
 		$fecha=$input[$fechaLote];
 
-		$libelle=$input['libelle'];
+		$libelleLote="libelle".strval($lot_id);
+		$libelle=$input[$libelleLote];
+
+		$libelle_fac_cltLote="libelle_fac_clt".strval($lot_id);
+		$libelle_fac_clt=$input[$libelle_fac_cltLote];
 
 		try {
-			Lote::update($lot_id,$importe,$fecha,$libelle);
+			Lote::update($lot_id,$importe,$fecha,$libelle,$libelle_fac_clt);
 			Session::flash('success','Lote '.$lot_id.' actualizado.');
 		}
 		//return Response::json($input);

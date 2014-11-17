@@ -33,6 +33,7 @@ EOT;
 		$query_lote=<<<EOT
 select l.lot_id
 	,l.lot_libelle
+	,l.lot_libelle_fac_clt
 	,l.lot_date_previ_fac
 	,l.lot_montant_euro
 	,coalesce(l.fsi_id,0) as fsi_id
@@ -76,8 +77,8 @@ EOT;
 
 	}
 
-	// actualiza el importe de un lote, dado su ID
-	public static function update($lot_id,$total,$fecha=null,$nombre=null) {
+	// actualiza los datos de un lote, dado su ID
+	public static function update($lot_id,$total,$fecha=null,$nombre=null,$desc=null) {
 		$appendSql=" ";
 		if ($fecha!=null) {
 			$appendSql=",lot_date_previ_fac='".ViewFormat::dateToDB($fecha)."'";
@@ -85,6 +86,10 @@ EOT;
 		if ($nombre!=null) {
 			$nombre=str_replace(array('\'','"','<','>','\\','(',')','?'),'',$nombre);
 			$appendSql.=",lot_libelle='".$nombre."'";
+		}
+		if ($desc!=null) {
+			$desc=str_replace(array('\'','"','<','>','\\','(',')','?'),'',$desc);
+			$appendSql.=",lot_libelle_fac_clt='".$desc."'";
 		}
 		$query="update lot set lot_montant_euro=".intval($total).$appendSql." where lot_id=".$lot_id;
 		$db=new OlgaConnection();

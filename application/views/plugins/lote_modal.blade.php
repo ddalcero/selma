@@ -11,28 +11,39 @@
             <div class="control-group">
               <label class="control-label" for="libelle">Nombre lote</label>
               <div class="controls">
-                <input id="libelle" name="libelle" type="text" class="span9" required="true" value="{{ $lote['lot_libelle'] }}" required="">
+                <input id="libelle{{ $lote['lot_id'] }}" name="libelle{{ $lote['lot_id'] }}" type="text" class="span9" required="true" value="{{ $lote['lot_libelle'] }}" required="">
+              </div>
+            </div>
+            <!-- Descripción lote -->
+            <div class="control-group">
+              <label class="control-label" for="libelle_fac_clt">Glosa factura</label>
+              <div class="controls">
+                <textarea id="libelle_fac_clt{{ $lote['lot_id'] }}" name="libelle_fac_clt{{ $lote['lot_id'] }}" class="span9" required="true" required="">{{ $lote['lot_libelle_fac_clt'] }}</textarea>
+              </div>
+            </div>
+            <!-- Fecha -->
+            <div class="control-group">
+              <label class="control-label" for="fechaLote{{ $lote['lot_id'] }}">Fecha</label>
+              <div class="controls">
+                <input id="fechaLote{{ $lote['lot_id'] }}" name="fechaLote{{ $lote['lot_id'] }}" type="text" class="input-small" required="true" value="{{ ViewFormat::DateFromDB($lote['lot_date_previ_fac']) }}" required="">&nbsp;
+                &nbsp;
+                <span class="label" id="valuf{{ $lote['lot_id'] }}"></span>
               </div>
             </div>
             <!-- Importe -->
             <div class="control-group">
               <label class="control-label" for="importe">Importe</label>
               <div class="controls">
-                <div class="input-prepend">
+                <div class="input-append input-prepend">
                   <span class="add-on">CLP $</span>
-                  <input id="importe_clp{{ $lote['lot_id'] }}" name="importe_clp{{ $lote['lot_id'] }}" class="input-medium" type="text" value="{{ ViewFormat::NFL($lote['lot_montant_euro']) }}" required="">
+                  <input id="importe_clp{{ $lote['lot_id'] }}" name="importe_clp{{ $lote['lot_id'] }}" class="input-small" type="text" value="{{ ViewFormat::NFL($lote['lot_montant_euro']) }}" required="">
+                  <button type="button" class="btn" onclick="$('#importe_clp{{ $lote['lot_id'] }}').change();">Actualiza UF</button>
                 </div>
-                <div class="input-prepend">
+                <div class="input-append input-prepend">
                   <span class="add-on">UF</span>
-                  <input id="importe_uf{{ $lote['lot_id'] }}" name="importe_uf{{ $lote['lot_id'] }}" class="input-small" type="text" value="" required="">
+                  <input id="importe_uf{{ $lote['lot_id'] }}" name="importe_uf{{ $lote['lot_id'] }}" class="input-mini" type="text" value="" required="">
+                  <button type="button" class="btn" onclick="$('#importe_uf{{ $lote['lot_id'] }}').change();">Actualiza $</button>
                 </div>
-              </div>
-            </div>
-            <!-- Importe -->
-            <div class="control-group">
-              <label class="control-label" for="fechaLote{{ $lote['lot_id'] }}">Fecha</label>
-              <div class="controls">
-                <input id="fechaLote{{ $lote['lot_id'] }}" name="fechaLote{{ $lote['lot_id'] }}" type="text" class="input-small" required="true" value="{{ ViewFormat::DateFromDB($lote['lot_date_previ_fac']) }}" required="">
               </div>
             </div>
             </fieldset>
@@ -51,6 +62,7 @@ function getUF{{ $lote['lot_id'] }}(fecha) {
   url='/ufdia/'+parts[2]+'/'+parts[1]+'/'+parts[0];
   ajaxGet(url,function(msg){
     $("#uf{{ $lote['lot_id'] }}").val(msg);
+    $("#valuf{{ $lote['lot_id'] }}").text(msg);
   });
 }
 
