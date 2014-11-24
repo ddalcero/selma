@@ -8,6 +8,7 @@ class Lote {
 		$query_lote=<<<EOT
 select l.lot_id
 	,l.lot_libelle
+	,l.lot_libelle_fac_clt
 	,l.lot_date_previ_fac
 	,l.lot_montant_euro
 	,coalesce(l.fsi_id,0) as fsi_id
