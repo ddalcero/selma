@@ -27,6 +27,8 @@ class Facturar_Controller extends Base_Controller {
 			$lote['lot_montant_uf']=$lote['lot_montant_euro']/$uf->uf;
 			$lote['valor_uf']=$uf->uf;
 
+			$tipo_factura=$lote['lot_tva']?"AFECTA":"EXENTA";
+
 			$username=Sentry::user()->get('metadata.first_name').' '.Sentry::user()->get('metadata.last_name');
 			$email=Sentry::user()->get('email');
 
@@ -35,9 +37,16 @@ class Facturar_Controller extends Base_Controller {
 				'proyecto'=>$proyecto,
 				'username'=>$username,
 				'email'=>$email,
+				'tipo_factura'=>$tipo_factura,
 			));
 
 			// Create the Transport
+/*
+			  ->setTo(array(
+			  	  'facturacion@siigroup.cl'
+			  	  ))
+*/
+
 			$transport = Swift_SendmailTransport::newInstance('/usr/sbin/sendmail -bs');
 			// Create the Mailer using your created Transport
 			$mailer = Swift_Mailer::newInstance($transport);
@@ -45,9 +54,6 @@ class Facturar_Controller extends Base_Controller {
 			$message = Swift_Message::newInstance('Petición de facturación')
 			  ->setFrom(array('noreply@siigroup.cl' => 'SELMA'))
 			  ->setTo(array(
-			  	  'facturacion@siigroup.cl'
-			  	  ))
-			  ->setCc(array(
 			  	  $email=>$username
 			  	  ))
 			  ->setBody($vista->render(),'text/html');

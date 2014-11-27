@@ -60,9 +60,12 @@ EOT;
 		$query_lote=<<<EOT
 select l.lot_id
 	,l.lot_libelle
+	,l.lot_libelle_fac_clt
 	,l.lot_date_previ_fac
 	,l.lot_montant_euro
 	,l.spj_id
+	,l.lot_tva
+	,l.lot_taux_tva
 	,coalesce(l.fsi_id,0) as fsi_id
 	,coalesce(c.fcc_date,l.lot_date_previ_fac,0) as lot_fecha
 from lot l
