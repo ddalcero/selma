@@ -45,8 +45,10 @@ class Facturar_Controller extends Base_Controller {
 			$message = Swift_Message::newInstance('Petición de facturación')
 			  ->setFrom(array('noreply@siigroup.cl' => 'SELMA'))
 			  ->setTo(array(
-			  	  'facturacion@siigroup.cl' => 'Facturación',
-			  	  $email=>$username,
+			  	  'facturacion@siigroup.cl'
+			  	  ))
+			  ->setCc(array(
+			  	  $email=>$username
 			  	  ))
 			  ->setBody($vista->render(),'text/html');
 			  ;
