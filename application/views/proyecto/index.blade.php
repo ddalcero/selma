@@ -14,8 +14,8 @@
 		{{ Table::close() }}
 	</div>
 
-<button class="btn btn-mini" type="button" id="selAll"><i class="icon-asterisk"></i> Marcar todos</button>
-<button class="btn btn-mini btn-primary" type="button" id="showSel"><i class="icon-eye-open icon-white"></i> Visualizar seleccionados</button>
+<button class="btn btn-mini" type="button" id="selAll"><i class="fa fa-asterisk"></i> Marcar todos</button>
+<button class="btn btn-mini btn-primary" type="button" id="showSel"><i class="fa fa-eye icon-white"></i> Visualizar seleccionados</button>
 
 <style>.column-spj_libelle { cursor: hand; cursor: pointer; }</style>
 <script>

@@ -14,8 +14,8 @@
 				{{ Form::control_group(Form::label('oldpassword', 'Contraseña actual'),Form::password('oldpassword', array('class' => 'span4', 'placeholder' => 'old password')),'') }}
 				{{ Form::control_group(Form::label('newpassword', 'Nueva contraseña'),Form::password('newpassword', array('class' => 'span4', 'placeholder' => 'password')),'') }}
 				{{ Form::control_group(Form::label('confirm', 'Confirmar contraseña'),Form::password('confirm', array('class' => 'span4', 'placeholder' => 'password')),'') }}
-				{{ Form::submit('<i class="icon-ok"></i> Actualizar',array('class'=>'btn btn-success')) }}
-				<a href="{{ URL::to('main') }}" class="btn"><i class="icon-remove"></i> Cancelar</a>
+				{{ Form::submit('<i class="fa fa-ok"></i> Actualizar',array('class'=>'btn btn-success')) }}
+				<a href="{{ URL::to('main') }}" class="btn"><i class="fa fa-remove"></i> Cancelar</a>
 				{{ Form::close() }}
 			</div>
 		</div>

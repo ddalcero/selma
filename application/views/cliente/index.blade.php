@@ -18,7 +18,7 @@ $(document).ready(function(){
    var clt_id=$("#lClientes").val();
    if (clt_id!='0') {
      var pUrl='/proyecto/'+$("#lPeriodos option:selected").text()+'/'+clt_id;
-     $("#proyectos").html('<br/><i class="icon-spinner icon-spin icon-large"></i> Cargando...');
+     $("#proyectos").html('<br/><i class="fa fa-spinner fa-spin fa-2x"></i> Cargando...');
      $("#proyectos").load(pUrl);
    } else $("#proyectos").empty();
  });

@@ -217,24 +217,26 @@ class Olga_Controller extends Base_Controller {
 
 			$proyectos=Proyecto::lotes(array('clt_id'=>$clt_id));
 
+			if ($clt_id<>0)
+				$nom_cliente=Cliente::name($clt_id);
+			else $nom_cliente="Todos";
+
 			// añade un elemento all'array (en este caso Link)
 			if ($proyectos) {
 				array_walk($proyectos, function(&$n) {
 					$n['link_f'] = HTML::link_to_route('facturar_lote','Ver lotes', array($n['spj_id']));
-
 				});
 			}
 
 			return View::make('proyecto.facturacion',array(
 				'proyecto'=>$proyectos,
+				'cliente'=>$nom_cliente,
 			));
-			// return Response::json(Proyecto::get(array('month'=>$month,'year'=>$year,'clt_id'=>$clt_id)));
 		}
 		catch (Exception $e) {
 			Session::flash('error','Error: '.$e->getMessage());
 			return Redirect::to('main');
 		}
-
 	}
 
 	public function post_actividad_update() {

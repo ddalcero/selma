@@ -7,7 +7,7 @@
             <div class="sku_div">
                 <input class="span3" type="text" placeholder="Stock type or SKU" id="sku" name="sku[]" />
                 <input class="span3" type="text" placeholder="Unit of Measurement" id="unit" name="unit[]" />
-                <button type="button" class="btn addstock"><i class="icon-plus"></i></button>
+                <button type="button" class="btn addstock"><i class="fa fa-plus"></i></button>
                 <input type="submit" class="btn btn-primary" value="Save" />
             </div>
         </div>

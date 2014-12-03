@@ -5,6 +5,7 @@ class Sticker_Controller extends Base_Controller {
 	public $restful=true;
 
 	// detalle stickers por subproyecto
+	// TO-DO: check if used...
 	public function get_list($spj_id=0) {
 		if ($spj_id==0) {
 			$stickers=Sticker::all();

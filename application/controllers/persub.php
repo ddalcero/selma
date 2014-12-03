@@ -14,6 +14,8 @@ class PerSub_Controller extends Base_Controller {
 		$nuevo->uf=Input::get('uf');
 		$nuevo->save();
 
+		// TO-DO: gestión de errores (no informa si hay un error en el update)
+
 		return Response::json(array('true'));
 	}
 

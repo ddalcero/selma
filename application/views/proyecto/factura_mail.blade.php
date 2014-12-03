@@ -1,6 +1,6 @@
 
 <body>
-<h3>Petición de emisión de factura {{ $tipo_factura }}</h3>
+<h3>Petición de emisión de factura {{ $tipo_factura }} {{ $link }}</h3>
 <hr/>
 
 Solicitud de factura {{ $tipo_factura }} enviada por <i>{{ $username }}</i>
@@ -54,6 +54,9 @@ Solicitud de factura {{ $tipo_factura }} enviada por <i>{{ $username }}</i>
 	</tr>
 	</table>
 </table>
+
+<p>Acceso al proyecto: {{ Request::server('SERVER_NAME') }} </p>
+<p>Gestión de facturación: {{ $link }} </p>
 
 </blockquote>
 

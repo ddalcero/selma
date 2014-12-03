@@ -22,8 +22,8 @@
 			
 			@endforeach
 
-			{{ Form::submit('<i class="icon-ok"></i> '.(isset($action_text)?$action_text:'Grabar'),array('class'=>'btn btn-success')) }}
-			<a href="{{ URL::to_route('group_list') }}" class="btn"><i class="icon-remove"></i> Cancelar</a>
+			{{ Form::submit('<i class="fa fa-ok"></i> '.(isset($action_text)?$action_text:'Grabar'),array('class'=>'btn btn-success')) }}
+			<a href="{{ URL::to_route('group_list') }}" class="btn"><i class="fa fa-remove"></i> Cancelar</a>
 
 
 			{{ Form::close() }}

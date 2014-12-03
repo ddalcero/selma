@@ -109,8 +109,8 @@
 				@if ($facturado>0)
 					<p class="text-warning">Lote facturado. Modificación no permitida.</p>
 				@else
-				<button id="bRecalcular" class="btn btn-info" type="button"><i class="icon-list-alt icon-white"></i> Recalcular</button>
-				<button id="bGrabarOlga" class="btn botonOlga btn-danger" type="button"><i class="icon-thumbs-up icon-white"></i> Actualizar Olga </button>
+				<button id="bRecalcular" class="btn btn-info" type="button"><i class="fa fa-list-alt icon-white"></i> Recalcular</button>
+				<button id="bGrabarOlga" class="btn botonOlga btn-danger" type="button"><i class="fa fa-thumbs-o-up icon-white"></i> Actualizar Olga </button>
 				@endif
 			</div>
 			<div id="resultadoOlga" class="span4">
@@ -120,7 +120,7 @@
 		<div class="row-fluid">
 			<div class="span9">
 				<p>
-					<button id="bAddLote" class="btn btn-success" type="button"><i class="icon-plus-sign icon-white"></i> Añadir lote</button>
+					<button id="bAddLote" class="btn btn-success" type="button"><i class="fa fa-plus-sign icon-white"></i> Añadir lote</button>
 				</p>
 			</div>
 		</div>

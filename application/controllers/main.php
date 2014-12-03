@@ -172,6 +172,10 @@ class Main_Controller extends Base_Controller {
 			Return Redirect::to('main');
 		}
 
+		Asset::add('select2','js/select2.min.js','jquery');
+		Asset::add('select2es','js/select2_locale_es.js','jquery');
+		Asset::add('select2css','css/select2.css','jquery');
+
 		return View::make('main.facturacion',array(
 			'clientes' => $clientes,
 			'title'=>'Facturación OLGA + Softland',
@@ -210,6 +214,39 @@ class Main_Controller extends Base_Controller {
 		return View::make('main.factory',array(
 			'title' => 'Gestión Software Factory ISBAN',
 			'periodos' => Periodo::get(),
+		));
+	}
+
+	// gestión de facturas (confirmar facturación y añadir nr. docuemento)
+	public function action_gestionfacturas() {
+
+		Asset::add('handlebars', 'js/handlebars.js','jquery');
+
+		$pendientes=Solicitud::where_estado(0)->order_by('fecha_sol','desc')->paginate(10);
+
+		return View::make('main.gestionfacturas',array(
+			'title' => 'Gestión de facturas pendientes',
+			'pendientes' => $pendientes,
+		));
+	}
+
+	// Visualiza DTEs emitidos
+	public function action_dtes() {
+
+		$columnas_tabla = array('E_FechaEmision','C_Cliente','E_NumFact','E_TipoDTE','E_Importe');
+
+		try {
+			$emitidos=Dtes::where('E_Estado','=','V')
+				->order_by('E_FechaEmision','desc')
+				->paginate(10,$columnas_tabla);
+		} catch (Exception $e) {
+			Session::flash('error',$e->getMessage());
+			Return Redirect::to('main');
+		}
+
+		return View::make('main.dtes',array(
+			'title'=>'DTEs Emitidos',
+			'emitidos'=>$emitidos,
 		));
 	}
 

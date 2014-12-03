@@ -30,6 +30,9 @@ Route::group(array('before' => 'is_admin'), function() {
 	Route::any('curl',function(){
 		return Mavenlink::Test();
 	});
+	Route::any('auxcli',function(){
+		return Response::json(Auxcli::byClt(Input::get('clt')));
+	});
 });
 // end testing only
 
@@ -37,7 +40,6 @@ Route::group(array('before' => 'is_admin'), function() {
 Route::any('/', function() {
 	return View::make('index');
 });
-
 
 // Login
 Route::get('login', array('as'=>'login','uses'=>'access@login'));
@@ -82,7 +84,7 @@ Route::group(array('before' => 'mod_realizado'), function() {
 // Acceso a REALIZADO
 Route::group(array('before' => 'realizado'), function() {
 	// REALIZADO - ACTIVIDAD & PROYECTOS
-	Route::get('actividad/(:num)/(:num)/(:num?)', array('as'=>'actividad_view','uses'=>'olga@actividad_view'));
+	Route::get('actividad/(:num)/(:num)/(:num)', array('as'=>'actividad_view','uses'=>'olga@actividad_view'));
 	Route::post('actividad/update', array('uses'=>'olga@actividad_update'));
 	Route::post('actividad/lote/update', array('uses'=>'olga@actividad_lote_update'));
 	Route::get('proyecto/(:num)/(:num)/(:num?)', array('as'=>'proyecto_detail','uses'=>'olga@proyecto'));
@@ -110,6 +112,10 @@ Route::group(array('before' => 'realizado'), function() {
 	Route::post('lote/ajuste',array('as'=>'add_lote_ajuste','uses'=>'olga@add_lote_ajuste'));
 	// correo@get
 	Route::get('lote/mail/(:num)', array('uses'=>'facturar@correo'));
+	// Solicitudes
+	Route::get('solicitud/(:num)',array('as'=>'detalle_solicitud','uses'=>'solicitud@detalle'));
+	Route::post('api/auxcli',array('uses'=>'auxcli@auxcli'));
+	Route::get('solicitud/dtes/(:any)',array('uses'=>'solicitud@dtes'));
 });
 
 // Gestión Facturación Software Factory

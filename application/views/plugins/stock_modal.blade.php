@@ -9,7 +9,7 @@
             <div class="form-inline-div" id="first_sku_div">
                 <input class="span3" type="text" placeholder="Stock type or SKU" id="sku" name="sku[]" />
                 <input class="span3" type="text" placeholder="Unit of Measurement" id="unit" name="unit[]" />
-                <button type="button" class="btn addstock_modal"><i class="icon-plus"></i></button>
+                <button type="button" class="btn addstock_modal"><i class="fa fa-plus"></i></button>
             </div>
         </div>
     </form>

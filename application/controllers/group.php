@@ -16,12 +16,6 @@ class Group_Controller extends Base_Controller {
 		$group=Sentry::group($id);
 		if ($group!==null) {
 		
-			// añadimos el JS para el dualListBox
-//			Asset::add('dual-list', 'js/jQuery.dualListBox-1.3.js');
-
-//			$user = Sentry::user(1);
-//			$user->add_to_group(1);
-
 			// Get all users and users in the groups
 			$users_all = Sentry::user()->all(array('id','username'));
 			$users_in_group = $group->users(array('id','username'));
@@ -44,8 +38,6 @@ class Group_Controller extends Base_Controller {
 					}
 				}
 			}
-	
-//			return Response::json(array('rules'=>$rules,'check'=>$check,'all_rules'=>$all_rules,'permissions'=>$group_permissions));
 
 			// make the view
 			return View::make('group.detail',array(

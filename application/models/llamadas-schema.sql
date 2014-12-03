@@ -1,3 +1,40 @@
+-- NEW FOR v.14.12
+-- two new tables: auxcli and solicitud
+
+-- auxcli
+CREATE TABLE `auxcli` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `aux` varchar(10) NOT NULL,
+  `clt_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- Solicitud
+CREATE TABLE `solicitud` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `estado` int(10) unsigned NOT NULL default 0, -- 0: Pendiente; 1: Facturada
+  `user_id` int(10) NOT NULL,
+  `fecha_sol` timestamp NOT NULL default CURRENT_TIMESTAMP,
+  `fecha_fac` timestamp NOT NULL,
+  `lot_id` int(10) NOT NULL,
+  `tipo_dte` int(10),
+  `nr_dte` int(10),
+  `clt_id` int(10) unsigned NOT NULL,
+  `spj_id` int(10) unsigned NOT NULL,
+  `cliente` varchar(50),
+  `glosa` varchar(50),
+  `detalle` varchar(255),
+  `importe_clp` decimal(15,2) NOT NULL,
+  `tasa_iva` decimal(4,2) NOT NULL default 0,
+  `iva` decimal(15,2) NOT NULL default 0,
+  `total` decimal(15,2) NOT NULL,
+  `valor_uf` decimal(8,2) unsigned,
+  `total_uf` decimal(15,2) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+-- ================================================================================
+
+-- OLD SCRIPT
 
 CREATE TABLE `llamadas` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -152,21 +189,21 @@ CREATE FUNCTION hierarchy_sys_connect_by_path(delimiter TEXT, node INT) RETURNS 
 NOT DETERMINISTIC
 READS SQL DATA
 BEGIN
-     DECLARE _path TEXT;
- DECLARE _cpath TEXT;
-        DECLARE _id INT;
-    DECLARE EXIT HANDLER FOR NOT FOUND RETURN _path;
-    SET _id = COALESCE(node, @id);
-      SET _path = _id;
-    LOOP
-                SELECT  parent
-              INTO    _id
-         FROM    orgchart
-         WHERE   id = _id
-                    AND COALESCE(id <> @start_with, TRUE);
-              SET _path = CONCAT(_id, delimiter, _path);
+  DECLARE _path TEXT;
+  DECLARE _cpath TEXT;
+  DECLARE _id INT;
+  DECLARE EXIT HANDLER FOR NOT FOUND RETURN _path;
+  SET _id = COALESCE(node, @id);
+  SET _path = _id;
+  LOOP
+    SELECT  parent
+      INTO    _id
+    FROM    orgchart
+    WHERE   id = _id
+      AND COALESCE(id <> @start_with, TRUE);
+    SET _path = CONCAT(_id, delimiter, _path);
   END LOOP;
-END
+  END
 //
 
 -- EJEMPLO DE QUERY (TODOS LOS HIJOS DESDE UN PADRE, PADRE DEFINIDO EN START_WITH)

@@ -31,7 +31,6 @@
 {{ Table::footers('','Nombre','e-mail','','','') }}
 {{ Table::close() }}
 
-
     </div>
 </div>
 @endsection

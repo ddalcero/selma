@@ -3,7 +3,7 @@
     <div class="panel-heading">
       <h4 class="panel-title">
         <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-          <i class="icon-collapse-alt"></i> Subir Archivo
+          <i class="fa fa-collapse-alt"></i> Subir Archivo
         </a>
       </h4>
     </div>

@@ -24,7 +24,7 @@
                 </div>
             </div>
 
-            <button type="button" id="donationcontent_add" class="btn"><i class="icon-plus"></i></button>
+            <button type="button" id="donationcontent_add" class="btn"><i class="fa fa-plus"></i></button>
         </form>
     </div>
     <div class="modal-footer">

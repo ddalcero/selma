@@ -6,7 +6,7 @@
     <div class="span9">
         <div class="hero-unit">
             <h1>Bienvenido</h1>
-            <p>Bienvenido a la Extranet de CVTeam Chile.</p>
+            <p>Bienvenido a la Extranet de SII Group Chile.</p>
 
         </div>
     </div>

@@ -1,15 +1,21 @@
 <?php
 
+/**
+ * Gestión de usuarios
+ *
+ * Funciones para la gestión de usuarios
+ */
 class User_Controller extends Base_Controller {
 
 	public $restful=true;
 
-	// detalle de los valores por el periodo indicado
+	/**
+	 * Listado de usuarios
+	 */
 	public static function get_index() {
 
 		Asset::add('datatables','js/jquery.dataTables.min.js','jquery');
 		Asset::add('css_datatables','css/DT_bootstrap.css','datatables');
-
 		Asset::add('datatablesCF','js/jquery.dataTables.columnFilter.js','datatables');
 
 		return View::make('user.index',array(
@@ -18,6 +24,9 @@ class User_Controller extends Base_Controller {
 		));
 	}
 
+	/**
+	 * Vista detalle de un usuario
+	 */
 	public static function get_detail($id) {
 		$user=User::find($id);
 		if ($user!==null) {
@@ -67,6 +76,9 @@ class User_Controller extends Base_Controller {
 		}
 	}
 
+	/**
+	 * Formulario alta nuevo usuario
+	 */
 	public static function get_new() {
 
 		$grupos=Group::all();
@@ -92,44 +104,6 @@ class User_Controller extends Base_Controller {
 			'groups' => $groups,
 			'action_text'=>'Grabar',
 		));
-	}
-
-	public static function put_update_password($id) {
-
-		$input=Input::get();
-
-		try {
-
-			$rules = array(
-				'password' => 'same:confirm'
-			);
-
-			$validation = Validator::make($input, $rules);
-			if ($validation->fails()) {
-				Session::flash('warning',$validation->errors);
-				return Redirect::to('/');
-			}
-
-			$user = Sentry::user((int)$id);
-
-			// Change the user password
-			if ($user->change_password($input['password'], $input['oldpassword'])) {
-				// User password was successfully updated
-				Session::flash('success','Contraseña actualizada.');
-				Return Redirect::to('/');
-			}
-			else {
-				// There was a problem updating the user password
-				Session::flash('error','No se ha podido actualizar la contraseña.');
-				Return Redirect::to('/');
-			}
-
-		}
-		catch (Sentry\SentryException $e) {
-			$errors = $e->getMessage();
-			Session::flash('error','Error: '.$errors.'; ID: '.$id);
-			Return Redirect::to('/');
-		}
 	}
 
 	public static function delete_delete($id) {

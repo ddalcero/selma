@@ -2,7 +2,7 @@
 @if ($proyecto!==null)
 
 	<h4>Proyectos</h4>
-	<h5>Cliente</h5>
+	<h5>Cliente: {{ $cliente }}</h5>
 	<div id="subSel">
 		{{ Table::striped_bordered_hover_condensed_open(array('id'=>'tabla_proyectos')) }}
 		{{ Table::headers('Proyecto','') }}

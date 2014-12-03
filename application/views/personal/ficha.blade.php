@@ -24,7 +24,7 @@
 	{{ Form::horizontal_open(null,null,array('name'=>'f_Organization')) }}
 	{{ Form::control_group(Form::label('parent', 'Depende de:'),Form::span5_select('parent',$personal,$boss), '') }}
 	{{ Form::control_group(Form::label('bossof[]', 'Supervisa:'),Form::span10_multiselect('bossof[]',$personal,$descendants,array('id'=>'bossof')), '') }}
-	{{ Form::actions(array(Button::link('#','Grabar cambios',array('class'=>'btn-info','id'=>'bSubmit'))->with_icon('ok'))) }}
+	{{ Form::actions(array(Button::link('#','Grabar cambios',array('class'=>'btn-info','id'=>'bSubmit'))->with_icon('check'))) }}
 
 	{{ Form::close() }}
 
@@ -77,7 +77,7 @@ Actividad
 						<div class="tab-pane" id="tab5">
 							<h4>Reuniones</h4>
 							<div id="reuniones">
-								<br/><i class="icon-spinner icon-spin icon-large"></i> Cargando...
+								<br/><i class="fa fa-spinner fa-spin fa-2x"></i> Cargando...
 							</div>
 						</div>
 					</div>
@@ -85,7 +85,7 @@ Actividad
 				</div>
 			</div>
 			<div class="span12">
-				<a href="{{ URL::to_route('personal_index') }}" class="btn"><i class="icon-user"></i> Personal</a>
+				<a href="{{ URL::to_route('personal_index') }}" class="btn"><i class="fa fa-user"></i> Personal</a>
 			</div>
 		</div>
 	</div>

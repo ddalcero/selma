@@ -1,7 +1,7 @@
 <?php return array(
 
   // The default icons prefix
-  'icons_prefix' => 'icon-',
+  'icons_prefix' => 'fa fa-',
 
   // Options relatives to the Table class
   'table' => array(

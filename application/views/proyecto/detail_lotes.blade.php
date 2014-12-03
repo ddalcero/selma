@@ -26,7 +26,7 @@
 								{{ Label::warning('Pendiente')}}
 								{{ Button::mini_warning_link('#lote_modal'.$lote['lot_id'],'',array('data-toggle'=>'modal'))->with_icon('pencil') }}
 								@if (Sentry::user()->has_access('mod_realizado'))
-								{{ Button::mini_danger_link('/lote/'.$lote['lot_id'],'',array('data-method'=>'delete'))->with_icon('trash') }}
+								{{ Button::mini_danger_link('/lote/'.$lote['lot_id'],'',array('data-method'=>'delete'))->with_icon('trash-o') }}
 								@endif
 								{{ Button::mini_link('/lote/mail/'.$lote['lot_id'],'Solicitar')->with_icon('certificate') }}
 								@endif
