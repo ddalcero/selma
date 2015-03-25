@@ -101,9 +101,6 @@ class Facturar_Controller extends Base_Controller {
 			  ->setTo(array(
 			  	  'facturacion@siigroup.cl'
 			  	  ))
-			  ->setCc(array(
-			  	  $email=>$username
-			  	  ))
 			  ->setBody($vista->render(),'text/html');
 			  ;
 			// Send the message
