@@ -1,3 +1,3 @@
 @foreach ($personas as $persona)
-| {{ $persona['dia'] }} | {{ $persona['nombre'] }} ({{ $persona['anyos'] }})
+| {{ $persona['dia'] }} | {{ $persona['nombre'] }}
 @endforeach
