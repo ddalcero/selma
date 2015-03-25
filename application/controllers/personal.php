@@ -4,8 +4,11 @@ class Personal_Controller extends Base_Controller {
 
 	public $restful=true;
 
-	// Listado de personas
-	public function get_index() {
+    /**
+     * Listado de personas
+     * @return mixed
+     */
+    public function get_index() {
 
 		Asset::add('datatables','js/jquery.dataTables.min.js','jquery');
 		Asset::add('css_datatables','css/DT_bootstrap.css','datatables');
@@ -21,18 +24,30 @@ class Personal_Controller extends Base_Controller {
 
 	}
 
-	// api JSON -- /api/personal?filter= $filter
-	public function get_api_name() {
+    /**
+     * api JSON -- /api/personal?filter= $filter
+     * TODO: revisar seguridad
+     * @return mixed
+     */
+    public function get_api_name() {
 		$filter=Input::get('filter');
 		return Response::json(Persona::get_name($filter));
 	}
 
-	// api JSON -- /api/personal?filter= $filter
-	public function get_api_id($id) {
+    /**
+     * api JSON -- /api/personal?filter= $filter
+     * @param $id
+     * @return mixed
+     */
+    public function get_api_id($id) {
 		return Response::json(Persona::get_id($id));
 	}
 
-	public function post_org_update($id) {
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function post_org_update($id) {
 		// id -> parent
 		// delete from orgchart where id=$id
 		// delete from orgchart where parent=$id
@@ -46,6 +61,7 @@ class Personal_Controller extends Base_Controller {
 
 		try {
 
+            // delete parent and child relationships
 			DB::table('orgchart')->where('id', '=', $id)->delete();
 			DB::table('orgchart')->where('parent', '=', $id)->delete();
 
@@ -78,8 +94,12 @@ class Personal_Controller extends Base_Controller {
 		));
 	}
 
-	// Ficha de persona
-	public function get_detail($per_id) {
+    /**
+     * Ficha de persona
+     * @param $per_id
+     * @return mixed
+     */
+    public function get_detail($per_id) {
 		$persona=Persona::find($per_id);
 		$actividad=Persona::get_actividad($per_id);
 

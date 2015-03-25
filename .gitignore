@@ -1,2 +1,4 @@
-
 application/config/application.php
+.idea/.name
+.idea/*
+.idea/dataSources.xml

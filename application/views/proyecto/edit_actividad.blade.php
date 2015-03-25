@@ -16,11 +16,13 @@
 			<dt>Periodo</dt>
 			<dd>{{ Session::get('sPeriodo') }}</dd>
 			<dt>Valor UF</dt>
-			<dd>{{ ViewFormat::NFL($valores->uf,2) }}</dt>
+			<dd>{{ ViewFormat::NFL($valores->uf,2) }}</dd>
 			<dt>Días periodo<br/></dt>
-			<dd>{{ $valores->pdays }}<br/></dt>
+			<dd>{{ $valores->pdays }}<br/></dd>
 			<dt>Proyecto</dt>
-			<dd>{{ $actividad[0]['spj_libelle'] }}</dt>
+			<dd>{{ $actividad[0]['spj_libelle'] }}</dd>
+			<dt>Tipo proyecto</dt>
+			<dd>{{ TipoProyecto::$Description[$tipo_proyecto->tipoproyecto] }} ({{ Proyecto::$Tipo[$wipm] }})</dd>
 		</dl>
 
 		<hr/>
@@ -95,9 +97,9 @@
 			</div>
 		</div>
 
-		@foreach ($lotes as $lote)
-		@include('plugins/lote_modal')
-		@endforeach
+			@foreach ($lotes as $lote)
+			@include('plugins/lote_modal')
+			@endforeach
 
 		@if (Sentry::user()->has_access('validar_proyecto'))
 		<div class="row-fluid">
@@ -120,7 +122,7 @@
 		<div class="row-fluid">
 			<div class="span9">
 				<p>
-					<button id="bAddLote" class="btn btn-success" type="button"><i class="fa fa-plus-sign icon-white"></i> Añadir lote</button>
+					<button id="bAddLote" class="btn btn-success" type="button"><i class="fa fa-plus icon-white"></i> Añadir lote</button>
 				</p>
 			</div>
 		</div>

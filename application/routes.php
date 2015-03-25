@@ -40,6 +40,9 @@ Route::group(array('before' => 'is_admin'), function() {
 Route::any('/', function() {
 	return View::make('index');
 });
+Route::any('getCumple',function(){
+	return View::make('plugins.cumples',array('personas'=>Persona::get_cumple()));
+});
 
 // Login
 Route::get('login', array('as'=>'login','uses'=>'access@login'));
@@ -84,7 +87,7 @@ Route::group(array('before' => 'mod_realizado'), function() {
 // Acceso a REALIZADO
 Route::group(array('before' => 'realizado'), function() {
 	// REALIZADO - ACTIVIDAD & PROYECTOS
-	Route::get('actividad/(:num)/(:num)/(:num)', array('as'=>'actividad_view','uses'=>'olga@actividad_view'));
+	Route::get('actividad/(:num)/(:num)/(:num?)', array('as'=>'actividad_view','uses'=>'olga@actividad_view'));
 	Route::post('actividad/update', array('uses'=>'olga@actividad_update'));
 	Route::post('actividad/lote/update', array('uses'=>'olga@actividad_lote_update'));
 	Route::get('proyecto/(:num)/(:num)/(:num?)', array('as'=>'proyecto_detail','uses'=>'olga@proyecto'));
@@ -105,11 +108,11 @@ Route::group(array('before' => 'realizado'), function() {
 	Route::delete('sticker/(:num)',array('uses'=>'sticker@delete'));
 	// FACTURACION
 	Route::get('lotes/(:num)', array('as'=>'proyecto_facturacion','uses'=>'olga@proyecto_facturacion'));
-	Route::get('lote/new/(:num)', array('as'=>'nuevo_lote','uses'=>'olga@add_lote'));
-	Route::get('facturar/(:num)', array('as'=>'facturar_lote','uses'=>'olga@facturar_lote'));
-	Route::post('lote/(:num)',array('as'=>'modificar_lote','uses'=>'olga@modificar_lote'));
-	Route::delete('lote/(:num)',array('as'=>'eliminar_lote','uses'=>'olga@eliminar_lote'));
-	Route::post('lote/ajuste',array('as'=>'add_lote_ajuste','uses'=>'olga@add_lote_ajuste'));
+	Route::get('lote/new/(:num)', array('as'=>'nuevo_lote','uses'=>'lote@add_lote'));
+	Route::get('facturar/(:num)', array('as'=>'facturar_lote','uses'=>'lote@facturar_lote'));
+	Route::post('lote/(:num)',array('as'=>'modificar_lote','uses'=>'lote@modificar_lote'));
+	Route::delete('lote/(:num)',array('as'=>'eliminar_lote','uses'=>'lote@eliminar_lote'));
+	Route::post('lote/ajuste',array('as'=>'add_lote_ajuste','uses'=>'lote@add_lote_ajuste'));
 	// correo@get
 	Route::get('lote/mail/(:num)', array('uses'=>'facturar@correo'));
 	// Solicitudes
@@ -251,5 +254,4 @@ View::composer(array('layouts/main', 'layouts/main_fluid'), function($view) {
 	Asset::add('font-awesome', 'css/font-awesome.min.css','bootstrap-css');
 
 	Asset::add('style', 'css/style.css');
-//	Asset::style('google-fonts', 'http://fonts.googleapis.com/css?family=Chewy:400');
 });

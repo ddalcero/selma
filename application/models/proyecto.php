@@ -2,7 +2,16 @@
 
 Class Proyecto {
 
-	public static function get($params) {
+    public static $Tipo=['-','Asistencia técnica','Subcontratación / Compra-venta',
+        'Mantenimiento Lineal','Mantenimiento no lineal',
+        'Fixed Price/Llave en mano','Workpackage'];
+
+
+    /**
+     * @param array $params: month, year, [clt_id]
+     * @return array|null
+     */
+    public static function get($params) {
 
 		// check the input params
 		$rules = array(
@@ -48,7 +57,11 @@ Class Proyecto {
 
 	}
 
-	public static function lotes($params) {
+    /**
+     * @param $params
+     * @return array|null
+     */
+    public static function lista($params) {
 
 		if ($params['clt_id']>0) {
 			$whereCli=' and p.clt_id='.$params['clt_id'];
@@ -72,7 +85,11 @@ EOT;
 
 	}
 
-	public static function datos($spj_id) {
+    /**
+     * @param $spj_id
+     * @return array|null
+     */
+    public static function datos($spj_id) {
 
 		$query_proyecto=<<<EOT
 SELECT p.clt_id, c.clt_nom, s.spj_id, s.prj_id, 
@@ -92,5 +109,48 @@ EOT;
 
 	}
 
+    /**
+     * Obtiene el "Work in progress method" del subproyecto
+     * @param $spj_id
+     * @return array|null
+     */
+    public static function getWIPMethod($spj_id) {
+        $query_proyecto=<<<EOT
+SELECT TOP 1
+ hpa_meth_id, hpa_prct_avct, hpa_date
+FROM
+ histo_prct_avct
+WHERE
+ hpa_spj_id = $spj_id
+ORDER BY
+ hpa_date desc
+EOT;
+        $db=new OlgaConnection();
+        $db->query($query_proyecto);
+        return $db->all();
+    }
+
+
+    /**
+     * Historico de los % de avance del subproyecto
+     * @param $spj_id
+     * @return array|null
+     */
+    public static function getHistory($spj_id) {
+        $query_proyecto=<<<EOT
+SELECT
+ hpa_prct_avct, hpa_date
+FROM
+ histo_prct_avct
+WHERE
+ hpa_spj_id = $spj_id
+ORDER BY
+ hpa_date asc
+EOT;
+
+        $db=new OlgaConnection();
+        $db->query($query_proyecto);
+        return $db->all();
+    }
 
 }

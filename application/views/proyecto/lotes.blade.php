@@ -14,7 +14,7 @@
 			<dt>Cliente</dt>
 			<dd>{{ $proyecto[0]['clt_nom'] }}</dd>
 			<dt>Proyecto</dt>
-			<dd>{{ $proyecto[0]['spj_libelle'] }}</dt>
+			<dd>{{ $proyecto[0]['spj_libelle'] }}</dd>
 		</dl>
 
 		<hr/>

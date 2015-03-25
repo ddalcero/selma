@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" hash="3794981697">
+    <data-source source="LOCAL" name="SQL Server - OLGASantiago@so-santiago.santiago.cvteam.cl" uuid="069f6228-48b9-4435-b896-99f96db844e4">
+      <driver-ref>sqlserver.jtds</driver-ref>
+      <jdbc-driver>net.sourceforge.jtds.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:jtds:sqlserver://so-santiago.santiago.cvteam.cl:1433/OLGASantiago</jdbc-url>
+      <libraries />
+    </data-source>
+  </component>
+</project>
+

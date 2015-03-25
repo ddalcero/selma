@@ -125,12 +125,6 @@ CREATE  TABLE IF NOT EXISTS `tipoproyecto` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- tipos proyectos
--- 0 new project
--- 1 AT CLP per day
--- 2 AT UF per day
--- 3 AT UF mensualizado
--- 4 FP UF Fixed priced Projects
 
 -- insert into llamadas (user_id,fono,tipo,opcion,descripcion,anexo) value (0,'94337921',2,2,'descipción','101')
 

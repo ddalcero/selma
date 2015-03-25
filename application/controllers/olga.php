@@ -4,7 +4,15 @@ class Olga_Controller extends Base_Controller {
 
 	public $restful=true;
 
-	public function get_actividad_view($year,$month,$spj_id=0) {
+    /**
+     * Visualiza la actividad realizada en un subproyecto para un periodo
+     * TODO: tratamiento de los diferentes tipos de proyectos
+     * @param $year
+     * @param $month
+     * @param int $spj_id
+     * @return mixed View: proyecto.view_actividad
+     */
+    public function get_actividad_view($year,$month,$spj_id=0) {
 		try {
 			$valores=Valor::periodo($year,$month)->first();
 			if (!$valores) {
@@ -30,7 +38,33 @@ class Olga_Controller extends Base_Controller {
 			if ($actividad) {
 				$total=array('realizado_uf'=>0,'realizado'=>0);
 				$descuentos=null;
-				array_walk($actividad, function(&$ar) use($valores,&$total,$year,$month,&$descuentos) {
+
+                // Work in progress method
+                $wip_method=Proyecto::getWIPMethod($spj_id);
+                if ($wip_method!=null) $wipm=$wip_method[0]['hpa_meth_id'];
+                else $wipm=0;
+
+                // Es FP?
+                $history=null;
+                if ($wipm==5) {
+                    $getHistory=Proyecto::getHistory($spj_id);
+                    // girar array para highcharts
+                    foreach ($getHistory as $avance) {
+                        $history[ViewFormat::dateFromDB($avance['hpa_date'])]=$avance['hpa_prct_avct'];
+                    }
+                }
+
+                // Tipo proyecto
+                $tipo_proyecto=TipoProyecto::where('spj_id','=',$spj_id)->first();
+                if ($tipo_proyecto==null) {
+                    // no lo encuentro: creo nuevo y grabo, valor por defecto
+                    $tipo_proyecto=new TipoProyecto();
+                    $tipo_proyecto->spj_id=$spj_id;
+                    $tipo_proyecto->tipoproyecto=0;
+                    $tipo_proyecto->save();
+                }
+
+                array_walk($actividad, function(&$ar) use($valores,&$total,$year,$month,&$descuentos) {
 					$ar['per-spj']=$ar['per_id'].'-'.$ar['spj_id'];
 
 					$persub=Persub::where('persub','=',$ar['per-spj'])->first();
@@ -52,7 +86,9 @@ class Olga_Controller extends Base_Controller {
 				});
 			}
 
-			return View::make('proyecto.view_actividad',array(
+            Asset::add('highcharts-js', 'js/highcharts.js', 'jquery');
+
+            return View::make('proyecto.view_actividad',array(
 				'actividad'=>$actividad,
 				'valores'=>$valores,
 				'total'=>(isset($total))?$total:null,
@@ -60,68 +96,69 @@ class Olga_Controller extends Base_Controller {
 				'edit_link'=>$edit_link,
 				'descuentos'=>$descuentos,
 				'cliente'=>$cliente,
+                'wipm'=>$wipm,
+                'history'=>$history,
+                'tipo_proyecto'=>$tipo_proyecto,
 			));
 
-			return Response::json($actividad);
+			// return Response::json($actividad);
 		}
 		catch (Exception $e) {
 			Session::flash('error','Error: '.$e->getMessage());
 			return Redirect::to('main');
 		}
 
-		// return Response::json(Actividad::get(array('spj_id'=>$spj_id,'month'=>$month,'year'=>$year)));
 	}
 
-	public function get_facturar_lote($spj_id) {
+    /**
+     * Modificación de la actividad mensual
+     * @param $year
+     * @param $month
+     * @param $spj_id
+     * @return mixed View: proyecto.edit_actividad
+     */
+    public function get_actividad_edit($year,$month,$spj_id) {
 		try {
-
-			$lotes=Lote::get($spj_id);
-			$proyecto=Proyecto::datos($spj_id);
-			$facturado=0;
-			if (count($lotes)>0) $facturado=$lotes[0]['fsi_id'];
-
-			$pdaymax=UfDia::max('pday');
-			$lastuf=UfDia::where('pday','=',$pdaymax)->first();
-
-			$total=array('total_uf'=>0,'total_clp'=>0);
-			array_walk($lotes, function(&$lot) use($lastuf,&$total) {
-				$ufday=date('Y-m-d',strtotime($lot['lot_fecha']));
-				$uf=UfDia::where('pday','=',$ufday)->first();
-				if (!$uf) $uf=$lastuf;
-				$lot['lot_montant_uf']=$lot['lot_montant_euro']/$uf->uf;
-				$lot['valor_uf']=$uf->uf;
-				$total['total_clp']+=$lot['lot_montant_euro'];
-				$total['total_uf']+=$lot['lot_montant_uf'];
-			});
-
-			Asset::add('jqueryui', 'js/jquery-ui-1.10.3.custom.js','jquery');
-			Asset::add('jqueryui-css','css/ui-lightness/jquery-ui-1.10.3.custom.min.css','jqueryui');
-			Asset::add('jqueryui-i18n','js/jquery.ui.datepicker-es.js','jqueryui');
-
-			return View::make('proyecto.lotes',array(
-				'lotes'=>$lotes,
-				'proyecto'=>$proyecto,
-				'spj_id'=>$spj_id,
-				'total'=>$total,
-			));
-
-			return Response::json($actividad);
-		}
-		catch (Exception $e) {
-			Session::flash('error','Error: '.$e->getMessage());
-			return Redirect::to('main');
-		}
-	}
-
-	public function get_actividad_edit($year,$month,$spj_id) {
-		try {
+			// Tenemos los valores de UF y jornadas?
 			$valores=Valor::periodo($year,$month)->first();
-			$actividad=Actividad::get(array('spj_id'=>$spj_id,'month'=>$month,'year'=>$year));
-
 			if (!$valores) {
 				throw new Exception("Valores de UF y jornadas no definidos en el periodo.", 1);
 			}
 
+			// Tipo proyecto
+			$tipo_proyecto=TipoProyecto::where('spj_id','=',$spj_id)->first();
+			if ($tipo_proyecto==null) {
+				// no lo encuentro: creo nuevo y grabo, valor por defecto
+				$tipo_proyecto=new TipoProyecto();
+				$tipo_proyecto->spj_id=$spj_id;
+				$tipo_proyecto->tipoproyecto=0;
+				$tipo_proyecto->save();
+			}
+
+            $wip_method=Proyecto::getWIPMethod($spj_id);
+            if ($wip_method!=null) $wipm=$wip_method[0]['hpa_meth_id'];
+            else $wipm=0;
+
+			// Como tratamos los proyectos
+			// tipos proyectos
+            // 0 'AT - En UF mensualizado',
+            // 1 'AT - Tarifa en UF por día',
+            // 2 'AT - Tarifa en CLP por día',
+            // 3 'FP - Llave en mano en UF',
+            // 4 'FP - Llave en mano en CLP',
+            // 5 'LM - Mantenimiento/soporte en UF por mes'
+
+			// El proyecto está marcado?
+			$chk=ChkProyecto::proyecto($spj_id,$year,$month)->first();
+			if ($chk==null) {
+				$checked=0;
+			}
+			else {
+				$checked=($chk->is_checked())?1:0;
+			}
+
+			// Obtenemos la actividad (tipo 0)
+			$actividad=Actividad::get(array('spj_id'=>$spj_id,'month'=>$month,'year'=>$year));
 			if ($actividad) {
 				$total=array('realizado_uf'=>0,'realizado'=>0);
 				array_walk($actividad, function(&$ar) use($valores,&$total) {
@@ -137,19 +174,15 @@ class Olga_Controller extends Base_Controller {
 				});
 			}
 
-			// checked
-			$chk=ChkProyecto::proyecto($spj_id,$year,$month)->first();
-			if ($chk==null) {
-				$checked=0;
-			}
-			else {
-				$checked=($chk->is_checked())?1:0;
-			}
-
+			// Obtengo los lotes por el periodo
 			$lotes=Lote::get_period($year,$month,$spj_id);
+
+			// Solo aplicable a proyectos T&M
+			// Revisar si se ha de modificar cuando tenemos proyectos con más de un lote en un mismo periodo
 			$facturado=0;
 			if (count($lotes)>0) $facturado=$lotes[0]['fsi_id'];
 
+			// Añadir la vista
 			Asset::add('jqueryui', 'js/jquery-ui-1.10.3.custom.js','jquery');
 			Asset::add('jqueryui-css','css/ui-lightness/jquery-ui-1.10.3.custom.min.css','jqueryui');
 			Asset::add('jqueryui-i18n','js/jquery.ui.datepicker-es.js','jqueryui');
@@ -165,8 +198,9 @@ class Olga_Controller extends Base_Controller {
 				'lotes'=>$lotes,
 				'facturado'=>$facturado,
 				'spj_id'=>$spj_id,
+                'wipm'=>$wipm,
+                'tipo_proyecto'=>$tipo_proyecto,
 			));
-
 			// return Response::json($actividad);
 		}
 		catch (Exception $e) {
@@ -175,7 +209,13 @@ class Olga_Controller extends Base_Controller {
 		}
 	}
 
-	public function get_proyecto($year,$month,$clt_id=0) {
+    /**
+     * @param $year
+     * @param $month
+     * @param int $clt_id
+     * @return mixed
+     */
+    public function get_proyecto($year,$month,$clt_id=0) {
 		try {
 			Session::put('sCliente',$clt_id);
 			Session::put('sPeriodo',$year.'/'.$month);
@@ -184,7 +224,7 @@ class Olga_Controller extends Base_Controller {
 
 			// añade un elemento all'array (en este caso Link)
 			if ($proyectos) {
-				array_walk($proyectos, function(&$n) use($year,$month) { 
+				array_walk($proyectos, function(&$n) use($year,$month) {
 					$n['chk_id'] = Form::checkbox($n['spj_id'],1,false,array('class'=>'chk_proyecto'));
 					$n['link_c'] = HTML::link_to_route('actividad_edit','Calcular', array($year,$month,$n['spj_id']));
 					$n['link_v'] = HTML::link_to_route('actividad_view','Visualizar', array($year,$month,$n['spj_id']));
@@ -211,11 +251,15 @@ class Olga_Controller extends Base_Controller {
 		}
 	}
 
-	public function get_proyecto_facturacion($clt_id=0) {
+    /**
+     * @param int $clt_id
+     * @return mixed
+     */
+    public function get_proyecto_facturacion($clt_id=0) {
 		try {
 			Session::put('sCliente',$clt_id);
 
-			$proyectos=Proyecto::lotes(array('clt_id'=>$clt_id));
+			$proyectos=Proyecto::lista(array('clt_id'=>$clt_id));
 
 			if ($clt_id<>0)
 				$nom_cliente=Cliente::name($clt_id);
@@ -239,7 +283,10 @@ class Olga_Controller extends Base_Controller {
 		}
 	}
 
-	public function post_actividad_update() {
+    /**
+     * @return string
+     */
+    public function post_actividad_update() {
 		try {
 			$actividades=Input::get();
 			foreach($actividades as $actividad) {
@@ -253,7 +300,10 @@ class Olga_Controller extends Base_Controller {
 		}
 	}
 
-	public function post_actividad_lote_update() {
+    /**
+     * @return string
+     */
+    public function post_actividad_lote_update() {
 		try {
 			$lotes=Input::get();
 			foreach($lotes as $lote) {
@@ -269,90 +319,11 @@ class Olga_Controller extends Base_Controller {
 
 	}
 
-	public function get_cliente() {
+    /**
+     * @return mixed
+     */
+    public function get_cliente() {
 		return Response::json(Cliente::get());
 	}
-
-	public function post_modificar_lote($lot_id) {
-		$input=Input::get();
-
-		$importeClp="importe_clp".strval($lot_id);
-		$importe=ViewFormat::NFFS($input[$importeClp]);
-
-		$fechaLote="fechaLote".strval($lot_id);
-		$fecha=$input[$fechaLote];
-
-		$libelleLote="libelle".strval($lot_id);
-		$libelle=$input[$libelleLote];
-
-		$libelle_fac_cltLote="libelle_fac_clt".strval($lot_id);
-		$libelle_fac_clt=$input[$libelle_fac_cltLote];
-
-		try {
-			Lote::update($lot_id,$importe,$fecha,$libelle,$libelle_fac_clt);
-			Session::flash('success','Lote '.$lot_id.' actualizado.');
-		}
-		//return Response::json($input);
-		catch (Exception $e) {
-			Session::flash('error','Error actualizando el lote '.$lot_id.': '.$e->getMessage());
-		}
-		return Redirect::back();
-
-	}
-
-	public function delete_eliminar_lote($lot_id) {
-		try {
-			Lote::delete($lot_id);
-			Session::flash('success','Eliminando lote '.$lot_id);
-		}
-		catch (Exception $e) {
-			Session::flash('error','Error eliminando el lote '.$lot_id.': '.$e->getMessage());
-		}
-		return Redirect::back();
-	}
-
-	// Añade un lote de ajuste (post)
-	public function post_add_lote_ajuste() {
-		$input=Input::get();
-
-		$fecha=$input['fechaLoteAjuste'];
-		$importe=ViewFormat::NFFS($input['importe_clp']);
-		$spj_id=$input['spj_id'];
-
-		try {
-			Lote::addlote($fecha,$importe,$spj_id);
-			Session::flash('success','Lotes creados correctamente.');
-		}
-		catch (Exception $e) {
-			Session::flash('error','Error creando lotes de ajuste: '.$e->getMessage());
-		}
-
-		//return Response::json(array($fecha,$importe,$spj_id));
-		return Redirect::back();
-	}
-
-	// Añade un lote a un sub-proyecto en la fecha actual
-	public function get_add_lote($spj_id) {
-		$fecha=date('d-m-Y');
-		return self::addLote($fecha,$spj_id);
-	}
-
-	// Añade un lote a un subproyecto en un periodo determinado
-	public function get_actividad_addlote($year,$month,$spj_id) {
-		$fecha=date("t-m-Y",strtotime($year.'-'.$month.'-'.'25'));
-		return self::addLote($fecha,$spj_id);
-	}
-
-	// Añade un lote - requiere fecha
-	private static function addLote($fecha,$spj_id) {
-		try {
-			Lote::addlote($fecha,0,$spj_id);
-			Session::flash('success','Lote creado correctamente.');
-		}
-		catch (Exception $e) {
-			Session::flash('error','Error creando el lote: '.$e->getMessage());
-		}
-		return Redirect::back();
-	}	
 
 }
