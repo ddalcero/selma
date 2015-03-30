@@ -47,7 +47,7 @@ class Factory_Controller extends Base_Controller {
 			// xls returns $value = array('A' => 'value'); so you have to remove keys
 			$fields = array();
 			foreach ($xls_fields as $field) {
-				$fields[] = strtolower($field);
+				$fields[] = trim(strtolower($field));
 			}
 			$campos=implode(',',$fields);
 
