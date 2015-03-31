@@ -81,7 +81,7 @@ Route::group(array('before' => 'is_admin'), function() {
 Route::group(array('before' => 'mod_realizado'), function() {
 	Route::get('actividad/(:num)/(:num)/(:num)/edit', array('as'=>'actividad_edit','uses'=>'olga@actividad_edit'));
 	// actividad/2014/9/1127/lote
-	Route::get('actividad/(:num)/(:num)/(:num)/lote', array('as'=>'actividad_addlote','uses'=>'olga@actividad_addlote'));
+	Route::get('actividad/(:num)/(:num)/(:num)/lote', array('as'=>'actividad_addlote','uses'=>'lote@actividad_addlote'));
 });
 
 // Acceso a REALIZADO
