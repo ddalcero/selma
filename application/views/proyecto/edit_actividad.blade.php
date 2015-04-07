@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="row-fluid">
-    @include('main/left')
+	@include('main/left')
 	<div class="span9">
 		<br/>
 

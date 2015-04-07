@@ -15,29 +15,29 @@ class Main_Controller extends Base_Controller {
 		return $periodo;		
 	}
 
-    /**
-     * Filtra todas las peticiones: han de estar registrados (login via Sentry)
-     */
-    public function __construct() {
-        parent::__construct(); // Our layout will still be instantiated now.
-        $this->filter('before', 'sentry');
+	/**
+	 * Filtra todas las peticiones: han de estar registrados (login via Sentry)
+	 */
+	public function __construct() {
+		parent::__construct(); // Our layout will still be instantiated now.
+		$this->filter('before', 'sentry');
 		//->only('logout');
-    }
+	}
 
-    /**
-     * Main page
-     * @return mixed
-     */
-    public function action_index() {
+	/**
+	 * Main page
+	 * @return mixed
+	 */
+	public function action_index() {
 		return View::make('main.index',array(
 			'title'=>'Inicio'));
 	}
 
-    /**
-     * Actualiza los valores de la UF desde SII.CL
-     * @return mixed
-     */
-    public function action_updateuf() {
+	/**
+	 * Actualiza los valores de la UF desde SII.CL
+	 * @return mixed
+	 */
+	public function action_updateuf() {
 
 		require 'vendor/autoload.php';
 
@@ -95,12 +95,12 @@ class Main_Controller extends Base_Controller {
 
 	}
 
-    /**
-     * @param $year
-     * @param $month
-     * @return mixed
-     */
-    public function action_clientes($year,$month) {
+	/**
+	 * @param $year
+	 * @param $month
+	 * @return mixed
+	 */
+	public function action_clientes($year,$month) {
 
 		// chequeamos si el usuario puede modificar
 		if (Sentry::user()->has_access('mod_realizado')) {

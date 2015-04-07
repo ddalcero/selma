@@ -60,10 +60,10 @@ Class Persona {
 	public static function get_cumple() {
 		$query_cumple=<<<EOT
 SELECT
-      per_prenom+' '+per_nom as nombre
-      ,convert(varchar,per_date_naissance,105) as birthdate
-      ,day(per_date_naissance) as dia
-      ,year(getdate())-year(per_date_naissance) as anyos
+	  per_prenom+' '+per_nom as nombre
+	  ,convert(varchar,per_date_naissance,105) as birthdate
+	  ,day(per_date_naissance) as dia
+	  ,year(getdate())-year(per_date_naissance) as anyos
 FROM personnel
 WHERE ( (per_date_depart is null) and (month(per_date_naissance)=month(getdate())))
 ORDER BY day(per_date_naissance)

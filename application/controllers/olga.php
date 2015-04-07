@@ -4,15 +4,15 @@ class Olga_Controller extends Base_Controller {
 
 	public $restful=true;
 
-    /**
-     * Visualiza la actividad realizada en un subproyecto para un periodo
-     * TODO: tratamiento de los diferentes tipos de proyectos
-     * @param $year
-     * @param $month
-     * @param int $spj_id
-     * @return mixed View: proyecto.view_actividad
-     */
-    public function get_actividad_view($year,$month,$spj_id=0) {
+	/**
+	 * Visualiza la actividad realizada en un subproyecto para un periodo
+	 * TODO: tratamiento de los diferentes tipos de proyectos
+	 * @param $year
+	 * @param $month
+	 * @param int $spj_id
+	 * @return mixed View: proyecto.view_actividad
+	 */
+	public function get_actividad_view($year,$month,$spj_id=0) {
 		try {
 			$valores=Valor::periodo($year,$month)->first();
 			if (!$valores) {
@@ -39,32 +39,32 @@ class Olga_Controller extends Base_Controller {
 				$total=array('realizado_uf'=>0,'realizado'=>0);
 				$descuentos=null;
 
-                // Work in progress method
-                $wip_method=Proyecto::getWIPMethod($spj_id);
-                if ($wip_method!=null) $wipm=$wip_method[0]['hpa_meth_id'];
-                else $wipm=0;
+				// Work in progress method
+				$wip_method=Proyecto::getWIPMethod($spj_id);
+				if ($wip_method!=null) $wipm=$wip_method[0]['hpa_meth_id'];
+				else $wipm=0;
 
-                // Es FP?
-                $history=null;
-                if ($wipm==5) {
-                    $getHistory=Proyecto::getHistory($spj_id);
-                    // girar array para highcharts
-                    foreach ($getHistory as $avance) {
-                        $history[ViewFormat::dateFromDB($avance['hpa_date'])]=$avance['hpa_prct_avct'];
-                    }
-                }
+				// Es FP?
+				$history=null;
+				if ($wipm==5) {
+					$getHistory=Proyecto::getHistory($spj_id);
+					// girar array para highcharts
+					foreach ($getHistory as $avance) {
+						$history[ViewFormat::dateFromDB($avance['hpa_date'])]=$avance['hpa_prct_avct'];
+					}
+				}
 
-                // Tipo proyecto
-                $tipo_proyecto=TipoProyecto::where('spj_id','=',$spj_id)->first();
-                if ($tipo_proyecto==null) {
-                    // no lo encuentro: creo nuevo y grabo, valor por defecto
-                    $tipo_proyecto=new TipoProyecto();
-                    $tipo_proyecto->spj_id=$spj_id;
-                    $tipo_proyecto->tipoproyecto=0;
-                    $tipo_proyecto->save();
-                }
+				// Tipo proyecto
+				$tipo_proyecto=TipoProyecto::where('spj_id','=',$spj_id)->first();
+				if ($tipo_proyecto==null) {
+					// no lo encuentro: creo nuevo y grabo, valor por defecto
+					$tipo_proyecto=new TipoProyecto();
+					$tipo_proyecto->spj_id=$spj_id;
+					$tipo_proyecto->tipoproyecto=0;
+					$tipo_proyecto->save();
+				}
 
-                array_walk($actividad, function(&$ar) use($valores,&$total,$year,$month,&$descuentos) {
+				array_walk($actividad, function(&$ar) use($valores,&$total,$year,$month,&$descuentos) {
 					$ar['per-spj']=$ar['per_id'].'-'.$ar['spj_id'];
 
 					$persub=Persub::where('persub','=',$ar['per-spj'])->first();
@@ -86,9 +86,9 @@ class Olga_Controller extends Base_Controller {
 				});
 			}
 
-            Asset::add('highcharts-js', 'js/highcharts.js', 'jquery');
+			Asset::add('highcharts-js', 'js/highcharts.js', 'jquery');
 
-            return View::make('proyecto.view_actividad',array(
+			return View::make('proyecto.view_actividad',array(
 				'actividad'=>$actividad,
 				'valores'=>$valores,
 				'total'=>(isset($total))?$total:null,
@@ -96,9 +96,9 @@ class Olga_Controller extends Base_Controller {
 				'edit_link'=>$edit_link,
 				'descuentos'=>$descuentos,
 				'cliente'=>$cliente,
-                'wipm'=>$wipm,
-                'history'=>$history,
-                'tipo_proyecto'=>$tipo_proyecto,
+				'wipm'=>$wipm,
+				'history'=>$history,
+				'tipo_proyecto'=>$tipo_proyecto,
 			));
 
 			// return Response::json($actividad);
@@ -110,14 +110,14 @@ class Olga_Controller extends Base_Controller {
 
 	}
 
-    /**
-     * Modificación de la actividad mensual
-     * @param $year
-     * @param $month
-     * @param $spj_id
-     * @return mixed View: proyecto.edit_actividad
-     */
-    public function get_actividad_edit($year,$month,$spj_id) {
+	/**
+	 * Modificación de la actividad mensual
+	 * @param $year
+	 * @param $month
+	 * @param $spj_id
+	 * @return mixed View: proyecto.edit_actividad
+	 */
+	public function get_actividad_edit($year,$month,$spj_id) {
 		try {
 			// Tenemos los valores de UF y jornadas?
 			$valores=Valor::periodo($year,$month)->first();
@@ -135,18 +135,18 @@ class Olga_Controller extends Base_Controller {
 				$tipo_proyecto->save();
 			}
 
-            $wip_method=Proyecto::getWIPMethod($spj_id);
-            if ($wip_method!=null) $wipm=$wip_method[0]['hpa_meth_id'];
-            else $wipm=0;
+			$wip_method=Proyecto::getWIPMethod($spj_id);
+			if ($wip_method!=null) $wipm=$wip_method[0]['hpa_meth_id'];
+			else $wipm=0;
 
 			// Como tratamos los proyectos
 			// tipos proyectos
-            // 0 'AT - En UF mensualizado',
-            // 1 'AT - Tarifa en UF por día',
-            // 2 'AT - Tarifa en CLP por día',
-            // 3 'FP - Llave en mano en UF',
-            // 4 'FP - Llave en mano en CLP',
-            // 5 'LM - Mantenimiento/soporte en UF por mes'
+			// 0 'AT - En UF mensualizado',
+			// 1 'AT - Tarifa en UF por día',
+			// 2 'AT - Tarifa en CLP por día',
+			// 3 'FP - Llave en mano en UF',
+			// 4 'FP - Llave en mano en CLP',
+			// 5 'LM - Mantenimiento/soporte en UF por mes'
 
 			// El proyecto está marcado?
 			$chk=ChkProyecto::proyecto($spj_id,$year,$month)->first();
@@ -198,8 +198,8 @@ class Olga_Controller extends Base_Controller {
 				'lotes'=>$lotes,
 				'facturado'=>$facturado,
 				'spj_id'=>$spj_id,
-                'wipm'=>$wipm,
-                'tipo_proyecto'=>$tipo_proyecto,
+				'wipm'=>$wipm,
+				'tipo_proyecto'=>$tipo_proyecto,
 			));
 			// return Response::json($actividad);
 		}
@@ -209,13 +209,13 @@ class Olga_Controller extends Base_Controller {
 		}
 	}
 
-    /**
-     * @param $year
-     * @param $month
-     * @param int $clt_id
-     * @return mixed
-     */
-    public function get_proyecto($year,$month,$clt_id=0) {
+	/**
+	 * @param $year
+	 * @param $month
+	 * @param int $clt_id
+	 * @return mixed
+	 */
+	public function get_proyecto($year,$month,$clt_id=0) {
 		try {
 			Session::put('sCliente',$clt_id);
 			Session::put('sPeriodo',$year.'/'.$month);
@@ -251,11 +251,11 @@ class Olga_Controller extends Base_Controller {
 		}
 	}
 
-    /**
-     * @param int $clt_id
-     * @return mixed
-     */
-    public function get_proyecto_facturacion($clt_id=0) {
+	/**
+	 * @param int $clt_id
+	 * @return mixed
+	 */
+	public function get_proyecto_facturacion($clt_id=0) {
 		try {
 			Session::put('sCliente',$clt_id);
 
@@ -283,10 +283,10 @@ class Olga_Controller extends Base_Controller {
 		}
 	}
 
-    /**
-     * @return string
-     */
-    public function post_actividad_update() {
+	/**
+	 * @return string
+	 */
+	public function post_actividad_update() {
 		try {
 			$actividades=Input::get();
 			foreach($actividades as $actividad) {
@@ -300,10 +300,10 @@ class Olga_Controller extends Base_Controller {
 		}
 	}
 
-    /**
-     * @return string
-     */
-    public function post_actividad_lote_update() {
+	/**
+	 * @return string
+	 */
+	public function post_actividad_lote_update() {
 		try {
 			$lotes=Input::get();
 			foreach($lotes as $lote) {
@@ -319,10 +319,10 @@ class Olga_Controller extends Base_Controller {
 
 	}
 
-    /**
-     * @return mixed
-     */
-    public function get_cliente() {
+	/**
+	 * @return mixed
+	 */
+	public function get_cliente() {
 		return Response::json(Cliente::get());
 	}
 

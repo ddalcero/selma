@@ -81,6 +81,43 @@ EOT;
 
 	}
 
+	public static function get_pendientes($year, $month, $per_id=0) {
+		if ($per_id!=0) $filtro_comercial="and (S.per_id_com=$per_id or S.per_id_cdp=$per_id)";
+		else $filtro_comercial="";
+
+		$query_lote=<<<EOT
+select l.lot_id
+	,sp.clt_id
+	,cl.clt_nom
+	,l.lot_libelle
+	,l.lot_libelle_fac_clt
+	,l.lot_date_previ_fac
+	,l.lot_montant_euro
+	,coalesce(l.fsi_id,0) as fsi_id
+	,coalesce(c.fcc_date,l.lot_date_previ_fac,0) as lot_fecha
+from lot l
+left join facture_sii s on l.fsi_id=s.fsi_id
+left join facture_clt c on s.fcc_id=c.fcc_id
+left join ss_projet sp on l.spj_id=sp.spj_id
+left join client cl on sp.clt_id=cl.clt_id
+where 
+	month(lot_date_previ_fac)=3
+	and year(lot_date_previ_fac)=2015
+	and (l.fsi_id = 0 or l.fsi_id is null) 
+	and l.spj_id in (
+		SELECT s.spj_id
+		FROM ss_projet s, projet p 
+		WHERE s.prj_id = p.prj_id $filtro_comercial
+	)
+order by cl.clt_nom
+EOT;
+
+		$db=new OlgaConnection();
+		$db->query($query_lote);
+		return $db->all();
+		
+	}
+
 	// actualiza los datos de un lote, dado su ID
 	public static function update($lot_id,$total,$fecha=null,$nombre=null,$desc=null) {
 		$appendSql=" ";

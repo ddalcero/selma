@@ -40,6 +40,7 @@ Route::group(array('before' => 'is_admin'), function() {
 Route::any('/', function() {
 	return View::make('index');
 });
+// Birthdays (intranet)
 Route::any('getCumple',function(){
 	return View::make('plugins.cumples',array('personas'=>Persona::get_cumple()));
 });
@@ -49,7 +50,7 @@ Route::get('login', array('as'=>'login','uses'=>'access@login'));
 Route::get('logout', array('as'=>'logout','uses'=>'access@logout'));
 Route::post('login', array('uses'=>'access@login'));
 
-// REGISTER IS NOT IN USER ANYMORE
+// REGISTER IS NOT IN USE ANYMORE
 //Route::get('register', array('as'=>'register','uses'=>'access@register'));
 //Route::post('register', array('uses'=>'access@register'));
 
@@ -108,6 +109,7 @@ Route::group(array('before' => 'realizado'), function() {
 	Route::delete('sticker/(:num)',array('uses'=>'sticker@delete'));
 	// FACTURACION
 	Route::get('lotes/(:num)', array('as'=>'proyecto_facturacion','uses'=>'olga@proyecto_facturacion'));
+	Route::get('pendientes', array('as'=>'lotes_pendientes','uses'=>'lote@lotes_pendientes'));
 	Route::get('lote/new/(:num)', array('as'=>'nuevo_lote','uses'=>'lote@add_lote'));
 	Route::get('facturar/(:num)', array('as'=>'facturar_lote','uses'=>'lote@facturar_lote'));
 	Route::post('lote/(:num)',array('as'=>'modificar_lote','uses'=>'lote@modificar_lote'));

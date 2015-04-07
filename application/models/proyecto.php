@@ -2,27 +2,27 @@
 
 Class Proyecto {
 
-    public static $Tipo=['-','Asistencia técnica','Subcontratación / Compra-venta',
-        'Mantenimiento Lineal','Mantenimiento no lineal',
-        'Fixed Price/Llave en mano','Workpackage'];
+	public static $Tipo=['-','Asistencia técnica','Subcontratación / Compra-venta',
+		'Mantenimiento Lineal','Mantenimiento no lineal',
+		'Fixed Price/Llave en mano','Workpackage'];
 
 
-    /**
-     * @param array $params: month, year, [clt_id]
-     * @return array|null
-     */
-    public static function get($params) {
+	/**
+	 * @param array $params: month, year, [clt_id]
+	 * @return array|null
+	 */
+	public static function get($params) {
 
 		// check the input params
 		$rules = array(
-		    'month' => 'required|integer',
-		    'year' => 'required|integer',
+			'month' => 'required|integer',
+			'year' => 'required|integer',
 		);
 
 		$validation = Validator::make($params, $rules);
 
 		if ($validation->fails()) {
-		    return $validation->errors;
+			return $validation->errors;
 		}
 
 		if ($params['clt_id']>0) {
@@ -57,11 +57,11 @@ Class Proyecto {
 
 	}
 
-    /**
-     * @param $params
-     * @return array|null
-     */
-    public static function lista($params) {
+	/**
+	 * @param $params
+	 * @return array|null
+	 */
+	public static function lista($params) {
 
 		if ($params['clt_id']>0) {
 			$whereCli=' and p.clt_id='.$params['clt_id'];
@@ -85,11 +85,11 @@ EOT;
 
 	}
 
-    /**
-     * @param $spj_id
-     * @return array|null
-     */
-    public static function datos($spj_id) {
+	/**
+	 * @param $spj_id
+	 * @return array|null
+	 */
+	public static function datos($spj_id) {
 
 		$query_proyecto=<<<EOT
 SELECT p.clt_id, c.clt_nom, s.spj_id, s.prj_id, 
@@ -109,13 +109,13 @@ EOT;
 
 	}
 
-    /**
-     * Obtiene el "Work in progress method" del subproyecto
-     * @param $spj_id
-     * @return array|null
-     */
-    public static function getWIPMethod($spj_id) {
-        $query_proyecto=<<<EOT
+	/**
+	 * Obtiene el "Work in progress method" del subproyecto
+	 * @param $spj_id
+	 * @return array|null
+	 */
+	public static function getWIPMethod($spj_id) {
+		$query_proyecto=<<<EOT
 SELECT TOP 1
  hpa_meth_id, hpa_prct_avct, hpa_date
 FROM
@@ -125,19 +125,19 @@ WHERE
 ORDER BY
  hpa_date desc
 EOT;
-        $db=new OlgaConnection();
-        $db->query($query_proyecto);
-        return $db->all();
-    }
+		$db=new OlgaConnection();
+		$db->query($query_proyecto);
+		return $db->all();
+	}
 
 
-    /**
-     * Historico de los % de avance del subproyecto
-     * @param $spj_id
-     * @return array|null
-     */
-    public static function getHistory($spj_id) {
-        $query_proyecto=<<<EOT
+	/**
+	 * Historico de los % de avance del subproyecto
+	 * @param $spj_id
+	 * @return array|null
+	 */
+	public static function getHistory($spj_id) {
+		$query_proyecto=<<<EOT
 SELECT
  hpa_prct_avct, hpa_date
 FROM
@@ -148,9 +148,9 @@ ORDER BY
  hpa_date asc
 EOT;
 
-        $db=new OlgaConnection();
-        $db->query($query_proyecto);
-        return $db->all();
-    }
+		$db=new OlgaConnection();
+		$db->query($query_proyecto);
+		return $db->all();
+	}
 
 }
