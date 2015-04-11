@@ -34,7 +34,12 @@ Route::group(array('before' => 'is_admin'), function() {
 		return Response::json(Auxcli::byClt(Input::get('clt')));
 	});
 });
+Route::any('debugger',function(){
+	$input=Input::get();
+	return Response::json($input);
+});
 // end testing only
+
 
 // Home Page
 Route::any('/', function() {
@@ -119,6 +124,7 @@ Route::group(array('before' => 'realizado'), function() {
 	Route::get('lote/mail/(:num)', array('uses'=>'facturar@correo'));
 	// Solicitudes
 	Route::get('solicitud/(:num)',array('as'=>'detalle_solicitud','uses'=>'solicitud@detalle'));
+	Route::delete('solicitud/(:num)',array('uses'=>'solicitud@delete'));
 	Route::post('api/auxcli',array('uses'=>'auxcli@auxcli'));
 	Route::get('solicitud/dtes/(:any)',array('uses'=>'solicitud@dtes'));
 });
