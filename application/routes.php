@@ -36,6 +36,7 @@ Route::group(array('before' => 'is_admin'), function() {
 });
 Route::any('debugger',function(){
 	$input=Input::get();
+	Log::info(json($input));
 	return Response::json($input);
 });
 // end testing only
