@@ -67,4 +67,17 @@ class Solicitud_Controller extends Base_Controller {
 			));
 	}
 
+	public function delete_delete($sol_id) {
+		// Delete Solicitud $ID
+		try {
+			$so=Solicitud::find($sol_id);
+			$so->delete();
+			Session::flash('success','Eliminando solicitud #'.$sol_id);
+		}
+		catch (Exception $e) {
+			Session::flash('error','Error eliminando la solicitud #'.$sol_id.': '.$e->getMessage());
+		}
+		return Redirect::back();
+	}
+
 }

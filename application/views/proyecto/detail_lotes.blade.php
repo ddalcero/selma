@@ -20,15 +20,20 @@
 							<td class="column-lot_montant_uf">{{ ViewFormat::NFL($lote['lot_montant_uf'],2) }}</td>
 							<td class="columnd-lot_status">
 								@if ($lote['fsi_id']>0)
-								{{ Label::success('Facturado') }}
-								{{ Label::normal(ViewFormat::NFL($lote['valor_uf'],2))}}
+									{{ Label::success('Emitida') }}
+									{{ Label::normal(ViewFormat::NFL($lote['valor_uf'],2))}}
 								@else
-								{{ Label::warning('Pendiente')}}
-								{{ Button::mini_warning_link('#lote_modal'.$lote['lot_id'],'',array('data-toggle'=>'modal'))->with_icon('pencil') }}
-								@if (Sentry::user()->has_access('mod_realizado'))
-								{{ Button::mini_danger_link('/lote/'.$lote['lot_id'],'',array('data-method'=>'delete'))->with_icon('trash-o') }}
-								@endif
-								{{ Button::mini_link('/lote/mail/'.$lote['lot_id'],'Solicitar')->with_icon('certificate') }}
+									@if ($lote['solicitud']<>0)
+										{{ Button::mini_info_link('/solicitud/'.$lote['solicitud'],'En curso #'.$lote['solicitud'])}}
+									@else
+										{{ Label::warning('Pendiente')}}
+										{{ Button::mini_warning_link('#lote_modal'.$lote['lot_id'],'',array('data-toggle'=>'modal'))->with_icon('pencil') }}
+
+										@if (Sentry::user()->has_access('mod_realizado'))
+											{{ Button::mini_danger_link('/lote/'.$lote['lot_id'],'',array('data-method'=>'delete'))->with_icon('trash-o') }}
+										@endif
+										{{ Button::mini_link('/lote/mail/'.$lote['lot_id'],'Solicitar')->with_icon('certificate') }}
+									@endif
 								@endif
 							</td>
 						</tr>

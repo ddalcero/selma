@@ -27,6 +27,13 @@ class Lote_Controller extends Base_Controller {
 				if (!$uf) $uf=$lastuf;
 				$lot['lot_montant_uf']=$lot['lot_montant_euro']/$uf->uf;
 				$lot['valor_uf']=$uf->uf;
+				if (!$lot['fsi_id']) {
+					$lot['solicitud']=0;
+					$solicitud=Solicitud::where('lot_id','=',$lot['lot_id'])->first();
+					if ($solicitud!==null) {
+						$lot['solicitud']=$solicitud->id;
+					}
+				}
 				$total['total_clp']+=$lot['lot_montant_euro'];
 				$total['total_uf']+=$lot['lot_montant_uf'];
 			});

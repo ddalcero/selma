@@ -16,7 +16,7 @@ CREATE TABLE `auxcli` (
 -- Solicitud
 CREATE TABLE `solicitud` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `estado` int(10) unsigned NOT NULL default 0, -- 0: Pendiente; 1: Facturada
+  `estado` int(10) unsigned NOT NULL default 0, -- 0: Pendiente; 1: Facturada; 2 eliminada
   `user_id` int(10) NOT NULL,
   `fecha_sol` timestamp NOT NULL default CURRENT_TIMESTAMP,
   `fecha_fac` timestamp NOT NULL,
