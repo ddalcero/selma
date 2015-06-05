@@ -10,7 +10,7 @@ class Dtes extends Eloquent {
 		Config::set('database.fetch', PDO::FETCH_ASSOC);
 		$query=<<<EOT
 select
-  t1.codaux
+  replace(t1.codaux,'.','') as codaux
  ,t2.nomaux
  ,sum(t1.netoexento+t1.netoafecto) neto
 from
