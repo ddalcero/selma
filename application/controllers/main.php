@@ -336,7 +336,7 @@ class Main_Controller extends Base_Controller {
 		Asset::add('select2es','js/select2_locale_es.js','jquery');
 		Asset::add('select2css','css/select2.css','jquery');
 
-		return View::make('main.dtesOlga',array(
+		return View::make('main.dtesolga',array(
 			'title'=>'Facturación OLGA - Softland',
 		));
 	}
@@ -373,7 +373,7 @@ class Main_Controller extends Base_Controller {
 			}
 		});
 
-		return View::make('main.dtesOlgaData',array(
+		return View::make('main.dtesolgadata',array(
 			'dtes'=>$dtes,
 			'auxiliar'=>$clientes,
 		));
