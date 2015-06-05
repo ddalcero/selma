@@ -4,7 +4,11 @@ class Solicitud_Controller extends Base_Controller {
 
 	public $restful=true;
 
-	// detalle de una solicitud
+	/**
+	 * detalle de una solicitud
+	 * @param $sol_id
+	 * @return string
+	 */
 	public function get_detalle($sol_id) {
 		$solicitud=Solicitud::find($sol_id);
 		if ($solicitud!==null) {
@@ -18,7 +22,7 @@ class Solicitud_Controller extends Base_Controller {
 
 			// buscamos si ya tiene asociación de auxiliar
 			$auxcli=Auxcli::byClt($solicitud->clt_id);
-			// si lo encontramos, le pasamos solo el ir del auxiliar
+			// si lo encontramos, le pasamos solo el id del auxiliar
 			$emitidos=null;
 			if ($auxcli!==null) {
 				$columnas_tabla = array('E_FechaEmision','C_Cliente','E_NumFact','E_TipoDTE','E_Importe');
@@ -56,6 +60,11 @@ class Solicitud_Controller extends Base_Controller {
 		return ('<h4>Solicitud no encontrada.</h4>');
 	}
 
+	/**
+	 * Lista de dtes
+	 * @param $auxcli
+	 * @return mixed
+	 */
 	public function get_dtes($auxcli) {
 		$columnas_tabla = array('E_FechaEmision','C_Cliente','E_NumFact','E_TipoDTE','E_Importe');
 		$emitidos=Dtes::where('E_Estado','=','V')
@@ -67,6 +76,11 @@ class Solicitud_Controller extends Base_Controller {
 			));
 	}
 
+	/**
+	 * elimina solicitud
+	 * @param $sol_id
+	 * @return mixed
+	 */
 	public function delete_delete($sol_id) {
 		// Delete Solicitud $ID
 		try {
@@ -78,6 +92,28 @@ class Solicitud_Controller extends Base_Controller {
 			Session::flash('error','Error eliminando la solicitud #'.$sol_id.': '.$e->getMessage());
 		}
 		return Redirect::back();
+	}
+
+	/**
+	 * actualiza solicitud
+	 * @param $sol_id
+	 * @return mixed
+	 */
+	public function put_update($sol_id) {
+		// Delete Solicitud $ID
+		$input=Input::get();
+		return Response::json($input);
+/*
+		try {
+			$so=Solicitud::find($sol_id);
+			// $so->delete();
+			Session::flash('success','Solicitud actualizada #'.$sol_id);
+		}
+		catch (Exception $e) {
+			Session::flash('error','Error eliminando la solicitud #'.$sol_id.': '.$e->getMessage());
+		}
+		return Redirect::back();
+*/
 	}
 
 }

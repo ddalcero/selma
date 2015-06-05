@@ -17,11 +17,15 @@
 	<li class="dropdown">
 	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-fw fa-money icon-black"></i> Facturación <b class="caret"></b></a>
 	<ul class="dropdown-menu">
+        @if (Sentry::user()->has_access('mod_realizado'))
+        <li><a href="{{ url('main/dtesOlga') }}"><i class="fa fa-fw fa-exchange icon-black"></i> Control Softland - OLGA</a></li>
+        @endif
 		<li><a href="{{ url('main/facturacion') }}"><i class="fa fa-fw fa-credit-card icon-black"></i> Solicitar</a></li>
 		@if (Sentry::user()->has_access('is_admin'))
 		<li><a href="{{ url('main/gestionfacturas') }}"><i class="fa fa-fw fa-list-ul icon-black"></i> Solicitudes pendientes</a></li>
 		@endif
 		<li><a href="{{ url('main/dtes') }}"><i class="fa fa-fw fa-file-pdf-o icon-black"></i> DTEs Emitidos</a></li>
+        <li><a href="{{ url('main/dtesPendientes') }}"><i class="fa fa-fw fa-usd icon-black"></i> DTEs Pendientes</a></li>
 	</ul>
 	</li>
 	@endif

@@ -2,6 +2,10 @@
 
 class Main_Controller extends Base_Controller {
 
+	/**
+	 * periodos
+	 * @return string
+	 */
 	private static function get_periodo() {
 		$periodo=Session::get('sPeriodo');
 		if (!$periodo) {
@@ -124,6 +128,12 @@ class Main_Controller extends Base_Controller {
 		));
 	}
 
+	/**
+	 * facturación clientes
+	 * @param $year
+	 * @param $month
+	 * @return mixed
+	 */
 	public function action_factura_clientes($year,$month) {
 
 		try {
@@ -140,6 +150,10 @@ class Main_Controller extends Base_Controller {
 	}
 
 
+	/**
+	 * gestión realizado mensual
+	 * @return mixed
+	 */
 	public function action_realizado() {
 		$periodo=self::get_periodo();
 		list($year,$month)=explode('/',$periodo);
@@ -168,6 +182,10 @@ class Main_Controller extends Base_Controller {
 		));
 	}
 
+	/**
+	 * gestión facturación
+	 * @return mixed
+	 */
 	public function action_facturacion() {
 
 		// chequeamos si el usuario puede modificar
@@ -197,6 +215,10 @@ class Main_Controller extends Base_Controller {
 		));
 	}
 
+	/**
+	 * stickers
+	 * @return mixed
+	 */
 	public function action_stickers() {
 		$periodo=self::get_periodo();
 		list($year,$month)=explode('/',$periodo);
@@ -211,6 +233,10 @@ class Main_Controller extends Base_Controller {
 		));
 	}
 
+	/**
+	 * proyectos pendientes (chk)
+	 * @return mixed
+	 */
 	public function action_pendientes() {
 
 		$periodo=self::get_periodo();
@@ -225,6 +251,10 @@ class Main_Controller extends Base_Controller {
 		));
 	}
 
+	/**
+	 * gestión software factory
+	 * @return mixed
+	 */
 	public function action_factory() {
 		return View::make('main.factory',array(
 			'title' => 'Gestión Software Factory ISBAN',
@@ -232,7 +262,10 @@ class Main_Controller extends Base_Controller {
 		));
 	}
 
-	// gestión de facturas (confirmar facturación y añadir nr. docuemento)
+	/**
+	 * gestión de facturas (confirmar facturación y añadir nr. docuemento)
+	 * @return mixed
+	 */
 	public function action_gestionfacturas() {
 
 		Asset::add('handlebars', 'js/handlebars.js','jquery');
@@ -245,7 +278,10 @@ class Main_Controller extends Base_Controller {
 		));
 	}
 
-	// Visualiza DTEs emitidos
+	/**
+	 * Visualiza DTEs emitidos
+	 * @return mixed
+	 */
 	public function action_dtes() {
 
 		$columnas_tabla = array('E_FechaEmision','C_Cliente','E_NumFact','E_TipoDTE','E_Importe');
@@ -262,6 +298,84 @@ class Main_Controller extends Base_Controller {
 		return View::make('main.dtes',array(
 			'title'=>'DTEs Emitidos',
 			'emitidos'=>$emitidos,
+		));
+	}
+
+	/**
+	 * Visualiza DTEs pendientes de pago
+	 * @return mixed
+	 */
+	public function action_dtesPendientes() {
+
+		$columnas_tabla = array('E_FechaEmision','E_FechaVencimiento','C_Cliente','E_NumFact','E_TipoDTE','E_Importe');
+
+		try {
+			$emitidos=Dtes::where('E_Estado','=','V')
+				->where_null('E_CompPago')
+				->order_by('C_Cliente','asc')
+				->order_by('E_FechaEmision','desc')
+				->paginate(10,$columnas_tabla);
+		} catch (Exception $e) {
+			Session::flash('error',$e->getMessage());
+			Return Redirect::to('main');
+		}
+
+		return View::make('main.dtesPendientes',array(
+			'title'=>'DTEs Pendientes',
+			'emitidos'=>$emitidos,
+		));
+	}
+
+	public function action_dtesOlga(){
+
+		Asset::add('jqueryui', 'js/jquery-ui-1.10.3.custom.js','jquery');
+		Asset::add('jqueryui-css','css/ui-lightness/jquery-ui-1.10.3.custom.min.css','jqueryui');
+		Asset::add('jqueryui-i18n','js/jquery.ui.datepicker-es.js','jqueryui');
+
+		Asset::add('select2','js/select2.min.js','jquery');
+		Asset::add('select2es','js/select2_locale_es.js','jquery');
+		Asset::add('select2css','css/select2.css','jquery');
+
+		return View::make('main.dtesOlga',array(
+			'title'=>'Facturación OLGA - Softland',
+		));
+	}
+
+	public function action_dtesOlgaData($year,$month) {
+		if ($month<1 or $month>12 or $month==null) $month=date('n');
+		if ($year<1 or $year==null) $year=date('Y');
+		$dtes=Dtes::emitidos($month,$year);
+
+		// Busco facturas en OLGA
+		$facturas=Factura::emitidas($month,$year);
+		if ($facturas==null || $dtes==null) {
+			return 'No hay facturas en el perido';
+		}
+		foreach ($facturas as $factura) $importe[$factura['clt_id']]=$factura['suma'];
+
+		// Lista de clientes OLGA
+		$clientes=Cliente::get();
+
+		// Recorremos los DTES, buscamos el ID OLGA y el total
+		array_walk($dtes,function(&$dt) use($year,$month,$importe) {
+			$cli = Auxcli::byAux($dt['codaux']);
+			// Check if we have it
+			if ($cli!=null) {
+				// importe en olga
+				if (array_key_exists($cli->clt_id,$importe)) $dt['olga']=$importe[$cli->clt_id];
+				else $dt['olga']=0;
+				$dt['delta'] = $dt['neto'] - $dt['olga'];
+			}
+			else {
+				// we don't have it - new one!
+				$dt['olga']=0;
+				$dt['delta']=0;
+			}
+		});
+
+		return View::make('main.dtesOlgaData',array(
+			'dtes'=>$dtes,
+			'auxiliar'=>$clientes,
 		));
 	}
 

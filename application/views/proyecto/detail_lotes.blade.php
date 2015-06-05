@@ -47,12 +47,12 @@
 							<td class="rightCell"> </td>
 						</tr>
 					</tfoot>
-					</table>
-					@if (Sentry::user()->has_access('mod_realizado'))
-					{{ Button::small_danger_link('/lote/new/'.$spj_id ,'Añadir Lote')->with_icon('plus'); }}
-					{{ Button::small_danger_link('#lote_ajuste_modal','Añadir Lotes de Ajuste',array('data-toggle'=>'modal'))->with_icon('plus'); }}
-					@endif
-					<hr/>
+				</table>
+                @if (Sentry::user()->has_access('mod_realizado'))
+                {{ Button::small_danger_link('/lote/new/'.$spj_id ,'Añadir Lote')->with_icon('plus'); }}
+                {{ Button::small_danger_link('#lote_ajuste_modal','Añadir Lotes de Ajuste',array('data-toggle'=>'modal'))->with_icon('plus'); }}
+                @endif
+                <hr/>
 			</div>
 		</div>
 		@foreach ($lotes as $lote)

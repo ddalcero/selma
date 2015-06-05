@@ -33,14 +33,15 @@ Route::group(array('before' => 'is_admin'), function() {
 	Route::any('auxcli',function(){
 		return Response::json(Auxcli::byClt(Input::get('clt')));
 	});
-});
-Route::any('debugger',function(){
-	$input=Input::get();
-	Log::info(json_encode($input));
-	return Response::json($input);
+	Route::any('debugger',function(){
+		$input=Input::get();
+		return Response::json($input);
+	});
+	Route::any('dtes',function(){
+		return Response::json(Factura::emitidas(4,2015));
+	});
 });
 // end testing only
-
 
 // Home Page
 Route::any('/', function() {
@@ -126,6 +127,7 @@ Route::group(array('before' => 'realizado'), function() {
 	// Solicitudes
 	Route::get('solicitud/(:num)',array('as'=>'detalle_solicitud','uses'=>'solicitud@detalle'));
 	Route::delete('solicitud/(:num)',array('uses'=>'solicitud@delete'));
+	Route::put('solicitud/(:num)',array('uses'=>'solicitud@update'));
 	Route::post('api/auxcli',array('uses'=>'auxcli@auxcli'));
 	Route::get('solicitud/dtes/(:any)',array('uses'=>'solicitud@dtes'));
 });
@@ -165,7 +167,11 @@ Route::group(array('before' => 'candidatos'), function() {
 	Route::post('candidato/new',array('uses'=>'tarifas@new'));
 });
 
+// Main controller
 Route::controller('main');
+
+// Kiss-Flow Receiver
+Route::controller('kissflow');
 
 // OLD - not in use anymore
 //Route::controller('llamada');

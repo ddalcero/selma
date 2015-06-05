@@ -48,13 +48,13 @@
 						@endif
  </table>
 
-{{ Form::horizontal_open(null,null,array('name'=>'form-factura-lote')) }}
+{{ Form::horizontal_open('solicitud/'.$solicitud->id,'PUT',array('name'=>'form-factura-lote')) }}
 {{ Form::control_group(Form::label('folio', 'Nr. de Folio'),Form::text('folio',null,array('class' => 'input-small', 'placeholder' => '# folio')), '') }}
 {{ Form::control_group(Form::label('auxiliar', 'Auxiliar'),Form::span5_select('auxiliar',$auxiliares,$auxcli), '') }}
 
 <input type="hidden" name="importe" id="importe" value="{{ ViewFormat::NFL($solicitud->importe_clp) }}">
 
-{{ Form::actions(array(Button::link('#','Grabar y enviar notificación',array('class'=>'btn-info','id'=>'bSubmit'))->with_icon('check'),Button::link('#','Cancelar',array('id'=>'bCancel'))->with_icon('times'))) }}
+{{ Form::actions(array(Button::primary_submit('Grabar y enviar notificación',array('class'=>'btn-info'))->with_icon('check'),Button::link('#','Cancelar',array('id'=>'bCancel'))->with_icon('times'))) }}
 
 {{ Form::close() }}
 
@@ -104,7 +104,7 @@ $(document).ready(function () {
 	});
 
 	// Grabar Folio y enviar resolución solicitud
-	$("#bSubmit").click(function(){
+/*	$("#bSubmit").click(function(){
 		dataString=$("form[name='form-factura-lote']").serialize();
 		$.ajax({
 			type: "post",
@@ -119,6 +119,7 @@ $(document).ready(function () {
 			}
 		});
 	});
+*/
 });
 @endsection
 
