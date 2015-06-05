@@ -27,6 +27,14 @@
         //alert ('aux='+aux+' cli='+cli);
         $.post("/api/auxcli",{aux:aux,clt_id:cli});
         //$("#dtes").load("/solicitud/dtes/"+e.added.id);
-        location.reload(true);
+        // location.reload(true);
+        $.ajax({
+            type: 'GET',
+            url: "/main/dtesOlgaData/{{ $year }}/{{ $month }}",
+            dataType: "html",
+            success: function(data) {
+                $('#dtes').html(data);
+            }
+        });
     });
 </script>

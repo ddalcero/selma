@@ -376,6 +376,8 @@ class Main_Controller extends Base_Controller {
 		return View::make('main.dtesolgadata',array(
 			'dtes'=>$dtes,
 			'auxiliar'=>$clientes,
+			'year'=>$year,
+			'month'=>$month,
 		));
 	}
 
