@@ -1,6 +1,15 @@
+-- 15.6.5
+-- New Kissflow table (logging)
 
-
--- 15.3.24
+CREATE TABLE `kissflow` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `process` VARCHAR(80),
+  `step` VARCHAR(80),
+  `payload` TEXT,
+  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- NEW FOR v.14.12
 -- two new tables: auxcli and solicitud

@@ -10,23 +10,24 @@ class Kissflow_Controller extends Base_Controller {
 
 	public function post_index() {
 		$response=file_get_contents('php://input');
+
 		$input=json_decode($response,true);
-		Log::info('Payload: '.$response);
 
 		if (!$input) {
 			Log::error('Bad input: ',substr($response,0,80));
 			return Response::json(array('error parsing json'));
 		}
 
-		switch($input['Process Name']) {
-			case 'Travel Claim':
-				return Response::json(array('Travel Claim'));
-				break;
-			default:
-				return Response::json(array('Nothing to do'));
-		}
-//		Log::info(print_r($input,true));
-		return Response::json($input);
+		Log::info('Received Payload for process: '.$input["Process Name"]);
+		Log::info('Process step: '.$input["Process Step"]);
+
+		$kf=new Kissflow();
+		$kf->process=$input["Process Name"];
+		$kf->step=$input["Process Step"];
+		$kf->payload=$response;
+		$kf->save();
+
+		return var_dump($input);
 	}
 
 	public function action_masters() {
