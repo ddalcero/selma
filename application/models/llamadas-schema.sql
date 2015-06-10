@@ -130,7 +130,7 @@ CREATE  TABLE IF NOT EXISTS `candidato` (
   PRIMARY KEY (`id`) 
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---- tipo proyecto
+-- tipo proyecto
 CREATE  TABLE IF NOT EXISTS `tipoproyecto` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `spj_id` int(10) unsigned NOT NULL,

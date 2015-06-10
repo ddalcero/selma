@@ -22,7 +22,7 @@
 </div>
 <script>
     $('select').on('change', function() {
-        aux=parseInt($(this).attr("name"));
+        aux=$(this).attr("name");
         cli=parseInt(this.value ); // or $(this).val()
         //alert ('aux='+aux+' cli='+cli);
         $.post("/api/auxcli",{aux:aux,clt_id:cli});
