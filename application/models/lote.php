@@ -107,9 +107,8 @@ left join ss_projet sp on l.spj_id=sp.spj_id
 left join projet p on sp.prj_id=p.prj_id
 left join client cl on sp.clt_id=cl.clt_id
 where 
-	month(lot_date_previ_fac)<= $month
-	and year(lot_date_previ_fac)<= $year
-	and (l.fsi_id = 0 or l.fsi_id is null) 
+	lot_date_previ_fac <= getdate()
+	and (l.fsi_id = 0 or l.fsi_id is null)
 	and l.spj_id in (
 		SELECT s.spj_id
 		FROM ss_projet s
