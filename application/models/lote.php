@@ -81,11 +81,9 @@ EOT;
 
 	}
 
-	public static function get_pendientes($year=0, $month=0, $per_id=0) {
+	public static function get_pendientes($per_id=0) {
 		if ($per_id!=0) $filtro_comercial="WHERE (S.per_id_com=$per_id or S.per_id_cdp=$per_id)";
 		else $filtro_comercial="";
-		if ($year==0) $year="year(getdate())";
-		if ($month==0) $month="month(getdate())";
 
 		$query_lote=<<<EOT
 select l.lot_id

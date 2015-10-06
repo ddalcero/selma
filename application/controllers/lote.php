@@ -71,7 +71,7 @@ class Lote_Controller extends Base_Controller {
 				$per_id=Sentry::user()->get('metadata.per_id');
 			}
 
-			$lotes=Lote::get_pendientes(0,0,$per_id);
+			$lotes=Lote::get_pendientes($per_id);
 
 			$facturado=0;
 			if (count($lotes)>0) $facturado=$lotes[0]['fsi_id'];
