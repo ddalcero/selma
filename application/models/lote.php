@@ -81,13 +81,17 @@ EOT;
 
 	}
 
-	public static function get_pendientes($year, $month, $per_id=0) {
-		if ($per_id!=0) $filtro_comercial="and (S.per_id_com=$per_id or S.per_id_cdp=$per_id)";
+	public static function get_pendientes($year=0, $month=0, $per_id=0) {
+		if ($per_id!=0) $filtro_comercial="WHERE (S.per_id_com=$per_id or S.per_id_cdp=$per_id)";
 		else $filtro_comercial="";
+		if ($year==0) $year="year(getdate())";
+		if ($month==0) $month="month(getdate())";
 
 		$query_lote=<<<EOT
 select l.lot_id
 	,sp.clt_id
+	,sp.spj_libelle
+	,sp.spj_id
 	,cl.clt_nom
 	,l.lot_libelle
 	,l.lot_libelle_fac_clt
@@ -101,15 +105,15 @@ left join facture_clt c on s.fcc_id=c.fcc_id
 left join ss_projet sp on l.spj_id=sp.spj_id
 left join client cl on sp.clt_id=cl.clt_id
 where 
-	month(lot_date_previ_fac)=3
-	and year(lot_date_previ_fac)=2015
+	month(lot_date_previ_fac)<= $month
+	and year(lot_date_previ_fac)<= $year
 	and (l.fsi_id = 0 or l.fsi_id is null) 
 	and l.spj_id in (
 		SELECT s.spj_id
-		FROM ss_projet s, projet p 
-		WHERE s.prj_id = p.prj_id $filtro_comercial
+		FROM ss_projet s
+		$filtro_comercial
 	)
-order by cl.clt_nom
+order by cl.clt_nom,sp.spj_id,lot_date_previ_fac
 EOT;
 
 		$db=new OlgaConnection();

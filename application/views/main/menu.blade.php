@@ -21,6 +21,7 @@
         <li><a href="{{ url('main/dtesOlga') }}"><i class="fa fa-fw fa-exchange icon-black"></i> Control Softland - OLGA</a></li>
         @endif
 		<li><a href="{{ url('main/facturacion') }}"><i class="fa fa-fw fa-credit-card icon-black"></i> Solicitar</a></li>
+        <li><a href="{{ url('pendientes') }}"><i class="fa fa-fw fa-star-half-empty icon-black"></i> Lotes pendientes</a></li>
 		@if (Sentry::user()->has_access('is_admin'))
 		<li><a href="{{ url('main/gestionfacturas') }}"><i class="fa fa-fw fa-list-ul icon-black"></i> Solicitudes pendientes</a></li>
 		@endif

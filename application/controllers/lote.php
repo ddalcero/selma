@@ -48,13 +48,71 @@ class Lote_Controller extends Base_Controller {
 				'spj_id'=>$spj_id,
 				'total'=>$total,
 				));
-
-			// return Response::json($actividad);
 		}
 		catch (Exception $e) {
 			Session::flash('error','Error: '.$e->getMessage());
 			return Redirect::to('main');
 		}
+	}
+
+	/**
+	 * Lista de lotes pendientes
+	 */
+	public function get_lotes_pendientes() {
+		try {
+
+			// chequeamos si el usuario puede modificar
+			if (Sentry::user()->has_access('mod_realizado')) {
+				// si puede modificar, obtenemos todos los clientes (per_id = 0)
+				$per_id=0;
+			}
+			else {
+				// si no puede modificar, obtenemos solo los clientes dónde tiene proyectos
+				$per_id=Sentry::user()->get('metadata.per_id');
+			}
+
+			$lotes=Lote::get_pendientes(0,0,$per_id);
+
+			$facturado=0;
+			if (count($lotes)>0) $facturado=$lotes[0]['fsi_id'];
+
+			$pdaymax=UfDia::max('pday');
+			$lastuf=UfDia::where('pday','=',$pdaymax)->first();
+
+			$total=array('total_uf'=>0,'total_clp'=>0);
+			array_walk($lotes, function(&$lot) use($lastuf,&$total) {
+				$ufday=date('Y-m-d',strtotime($lot['lot_fecha']));
+				$uf=UfDia::where('pday','=',$ufday)->first();
+				if (!$uf) $uf=$lastuf;
+				$lot['lot_montant_uf']=$lot['lot_montant_euro']/$uf->uf;
+				$lot['valor_uf']=$uf->uf;
+				if (!$lot['fsi_id']) {
+					$lot['solicitud']=0;
+					$solicitud=Solicitud::where('lot_id','=',$lot['lot_id'])->first();
+					if ($solicitud!==null) {
+						$lot['solicitud']=$solicitud->id;
+					}
+				}
+				$total['total_clp']+=$lot['lot_montant_euro'];
+				$total['total_uf']+=$lot['lot_montant_uf'];
+			});
+
+			Asset::add('jqueryui', 'js/jquery-ui-1.10.3.custom.js','jquery');
+			Asset::add('jqueryui-css','css/ui-lightness/jquery-ui-1.10.3.custom.min.css','jqueryui');
+			Asset::add('jqueryui-i18n','js/jquery.ui.datepicker-es.js','jqueryui');
+
+			return View::make('proyecto.lotes_pendientes',array(
+				'lotes'=>$lotes,
+				'total'=>$total,
+				'currentClient'=>'-',
+				'currentProject'=>'-',
+				));
+		}
+		catch (Exception $e) {
+			Session::flash('error','Error: '.$e->getMessage());
+			return Redirect::to('main');
+		}
+
 	}
 
 	/**
@@ -145,13 +203,6 @@ class Lote_Controller extends Base_Controller {
 	public function get_actividad_addlote($year,$month,$spj_id) {
 		$fecha=date("t-m-Y",strtotime($year.'-'.$month.'-'.'25'));
 		return self::addLote($fecha,$spj_id);
-	}
-
-	/**
-	 * Lista de lotes pendientes
-	 */
-	public function get_lotes_pendientes() {
-		return Response::json(Lote::get_pendientes(2015,3,0));
 	}
 
 	/**

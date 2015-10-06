@@ -1,8 +1,12 @@
 		@if (count($lotes)>0)
+        @if ($currentClient="-") @endif
+        @if ($currentProject="-") @endif
 		<div class="row-fluid">
 			<div class="span12">
 				<table class="table-striped table-hover table-condensed table">
 					<thead>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
 						<th>#</th>
 						<th>Nombre lote</th>
 						<th>Fecha fact.</th>
@@ -12,7 +16,21 @@
 					</thead>
 					<tbody>
 						@foreach ($lotes as $lote)
-						<tr class="lotes">
+                            @if ($currentClient<>$lote['clt_nom'])
+                                <tr class="lotes"><td colspan="8"><strong>{{ $lote['clt_nom'] }}</strong></td></tr>
+                                @if ($currentClient=$lote['clt_nom']) @endif
+                            @endif
+                            @if ($currentProject<>$lote['spj_libelle'])
+                                <tr class="lotes">
+                                    <td>&nbsp;</td>
+                                    <td colspan="7">
+                                        <a href="/facturar/{{ $lote['spj_id'] }}">{{ $lote['spj_libelle'] }}</a></td>
+                                </tr>
+                                @if ($currentProject=$lote['spj_libelle']) @endif
+                            @endif
+                            <tr class="lotes">
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
 							<td class="column-lot_id">{{ $lote['lot_id'] }}</td>
 							<td class="column-lot_libelle">{{ $lote['lot_libelle'] }}</td>
 							<td class="column-lot_fecha">{{ ViewFormat::dateFromDB($lote['lot_fecha']) }}</td>
@@ -41,7 +59,7 @@
 					</tbody>
 					<tfoot>
 						<tr>
-							<td colspan="3" class="rightCell">TOTAL</td>
+							<td colspan="5" class="rightCell">TOTAL</td>
 							<td class="rightCell"><strong>{{ ViewFormat::NFL($total['total_clp'],0) }}</strong></td>
 							<td class="rightCell"><strong>{{ ViewFormat::NFL($total['total_uf'],2) }}</strong></td>
 							<td class="rightCell"> </td>
@@ -60,9 +78,6 @@
 		@foreach ($lotes as $lote)
 		@include('plugins/lote_modal')
 		@endforeach
-        @if (isset($spj_id))
-    		@include('plugins/lote_ajuste_modal')
-        @endif
 		@else
 			<p class="text-warning">No se han encontrado lotes de facturación en este periodo</p>
 		@endif
