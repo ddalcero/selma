@@ -31,7 +31,7 @@
                             <tr class="lotes">
                             <td>&nbsp;</td>
                             <td>&nbsp;</td>
-							<td class="column-lot_id">{{ $lote['lot_id'] }}</td>
+							<td class="column-lot_id">{{ $lote['lot_index'] }}</td>
 							<td class="column-lot_libelle">{{ $lote['lot_libelle'] }}</td>
 							<td class="column-lot_fecha">{{ ViewFormat::dateFromDB($lote['lot_fecha']) }}</td>
 							<td class="column-lot_montant_euro">{{ ViewFormat::NFL($lote['lot_montant_euro']) }}</td>

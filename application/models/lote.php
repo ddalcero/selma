@@ -90,10 +90,11 @@ EOT;
 		$query_lote=<<<EOT
 select l.lot_id
 	,sp.clt_id
-	,sp.spj_libelle
+	,substring(str(p.prj_no / 10000.0, 6, 4), 3, 4) + '-' + substring(str(sp.spj_index / 100.0, 4, 2), 3, 4) + ' ' + sp.spj_libelle AS spj_libelle
 	,sp.spj_id
 	,cl.clt_nom
 	,l.lot_libelle
+	,l.lot_index
 	,l.lot_libelle_fac_clt
 	,l.lot_date_previ_fac
 	,l.lot_montant_euro
@@ -103,6 +104,7 @@ from lot l
 left join facture_sii s on l.fsi_id=s.fsi_id
 left join facture_clt c on s.fcc_id=c.fcc_id
 left join ss_projet sp on l.spj_id=sp.spj_id
+left join projet p on sp.prj_id=p.prj_id
 left join client cl on sp.clt_id=cl.clt_id
 where 
 	month(lot_date_previ_fac)<= $month
