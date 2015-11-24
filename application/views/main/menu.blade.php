@@ -22,9 +22,7 @@
         @endif
 		<li><a href="{{ url('main/facturacion') }}"><i class="fa fa-fw fa-credit-card icon-black"></i> Solicitar</a></li>
         <li><a href="{{ url('pendientes') }}"><i class="fa fa-fw fa-star-half-empty icon-black"></i> Lotes pendientes</a></li>
-		@if (Sentry::user()->has_access('is_admin'))
 		<li><a href="{{ url('main/gestionfacturas') }}"><i class="fa fa-fw fa-list-ul icon-black"></i> Solicitudes pendientes</a></li>
-		@endif
 		<li><a href="{{ url('main/dtes') }}"><i class="fa fa-fw fa-file-pdf-o icon-black"></i> DTEs Emitidos</a></li>
         <li><a href="{{ url('main/dtesPendientes') }}"><i class="fa fa-fw fa-usd icon-black"></i> DTEs Pendientes</a></li>
 	</ul>
