@@ -53,6 +53,8 @@
 {{ Form::control_group(Form::label('auxiliar', 'Auxiliar'),Form::span5_select('auxiliar',$auxiliares,$auxcli), '') }}
 
 <input type="hidden" name="importe" id="importe" value="{{ ViewFormat::NFL($solicitud->importe_clp) }}">
+<input type="hidden" name="tipo_dte" id="tipo_dte" value="">
+<input type="hidden" name="fecha_fac" id="fecha_fac" value="">
 
 {{ Form::actions(array(Button::primary_submit('Grabar y enviar notificación',array('class'=>'btn-info'))->with_icon('check'),Button::link('#','Cancelar',array('id'=>'bCancel'))->with_icon('times'))) }}
 
@@ -88,6 +90,9 @@ $(document).ready(function () {
 	// Selecciona línea y pon nr. de folio en campo texto
 	$('#tabla_dtes tr').click(function(event) {
 		$("#folio").val(($('.column-e_numfact',this).html()));
+		$("#tipo_dte").val(($('.column-e_tipodte',this).html()));
+		$("#fecha_fac").val(($('.column-e_fechaemision',this).html()));
+
 
 		var imp_dte=($('.column-e_importe',this).html() + '').replace(/[^0-9+-Ee.]/g, '');
 		var imp_sol=($("#importe").val() + '').replace(/[^0-9+-Ee.]/g, '');

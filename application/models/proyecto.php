@@ -49,7 +49,7 @@ Class Proyecto {
 			'   AND year(fdt_mois_annee)=' . $params['year'] .
 			' ) ' .
 			'order by ' .
-			' s.prj_id, p.clt_id ';
+			' prj_no,spj_index, p.clt_id ';
 
 		$db=new OlgaConnection();
 		$db->query($query_proyecto);

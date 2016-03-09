@@ -102,18 +102,22 @@ class Solicitud_Controller extends Base_Controller {
 	public function put_update($sol_id) {
 		// Delete Solicitud $ID
 		$input=Input::get();
-		return Response::json($input);
-/*
+//		return Response::json($input);
 		try {
 			$so=Solicitud::find($sol_id);
-			// $so->delete();
+			$so->estado=1;
+			$so->tipo_dte=$input['tipo_dte'];
+			$so->nr_dte=$input['folio'];
+			//$so->fecha_fac=$input['folio'];
+			$so->save();
+			//TO-DO Enviar Mail al solicitante
 			Session::flash('success','Solicitud actualizada #'.$sol_id);
 		}
 		catch (Exception $e) {
-			Session::flash('error','Error eliminando la solicitud #'.$sol_id.': '.$e->getMessage());
+			Session::flash('error','Error grabando la solicitud #'.$sol_id.': '.$e->getMessage());
 		}
+		//TO-DO No es un back, sino vuelve a la lista de solicitudes pendientes
 		return Redirect::back();
-*/
 	}
 
 }
