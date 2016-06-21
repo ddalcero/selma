@@ -15,29 +15,30 @@ class Lote_Controller extends Base_Controller {
 			$lotes=Lote::get($spj_id);
 			$proyecto=Proyecto::datos($spj_id);
 			$facturado=0;
-			if (count($lotes)>0) $facturado=$lotes[0]['fsi_id'];
 
 			$pdaymax=UfDia::max('pday');
 			$lastuf=UfDia::where('pday','=',$pdaymax)->first();
-
 			$total=array('total_uf'=>0,'total_clp'=>0);
-			array_walk($lotes, function(&$lot) use($lastuf,&$total) {
-				$ufday=date('Y-m-d',strtotime($lot['lot_fecha']));
-				$uf=UfDia::where('pday','=',$ufday)->first();
-				if (!$uf) $uf=$lastuf;
-				$lot['lot_montant_uf']=$lot['lot_montant_euro']/$uf->uf;
-				$lot['valor_uf']=$uf->uf;
-				if (!$lot['fsi_id']) {
-					$lot['solicitud']=0;
-					$solicitud=Solicitud::where('lot_id','=',$lot['lot_id'])->first();
-					if ($solicitud!==null) {
-						$lot['solicitud']=$solicitud->id;
-					}
-				}
-				$total['total_clp']+=$lot['lot_montant_euro'];
-				$total['total_uf']+=$lot['lot_montant_uf'];
-			});
 
+			if (count($lotes)>0) {
+				$facturado=$lotes[0]['fsi_id'];
+				array_walk($lotes, function(&$lot) use($lastuf,&$total) {
+					$ufday=date('Y-m-d',strtotime($lot['lot_fecha']));
+					$uf=UfDia::where('pday','=',$ufday)->first();
+					if (!$uf) $uf=$lastuf;
+					$lot['lot_montant_uf']=$lot['lot_montant_euro']/$uf->uf;
+					$lot['valor_uf']=$uf->uf;
+					if (!$lot['fsi_id']) {
+						$lot['solicitud']=0;
+						$solicitud=Solicitud::where('lot_id','=',$lot['lot_id'])->first();
+						if ($solicitud!==null) {
+							$lot['solicitud']=$solicitud->id;
+						}
+					}
+					$total['total_clp']+=$lot['lot_montant_euro'];
+					$total['total_uf']+=$lot['lot_montant_uf'];
+				});
+			}
 			Asset::add('jqueryui', 'js/jquery-ui-1.10.3.custom.js','jquery');
 			Asset::add('jqueryui-css','css/ui-lightness/jquery-ui-1.10.3.custom.min.css','jqueryui');
 			Asset::add('jqueryui-i18n','js/jquery.ui.datepicker-es.js','jqueryui');
