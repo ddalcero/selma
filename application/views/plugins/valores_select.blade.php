@@ -18,7 +18,7 @@ $(document).ready(function() {
   var cUrl='/valores/'+periodo+'/';
 
   $("#valores").load(cUrl);
-  $("#selClientes").load('/main/clientes/'+periodo);
+  $("#selClientes").load('{{$urlLoad}}'+periodo);
   //$("#lClientes").change();
  })
  .change();

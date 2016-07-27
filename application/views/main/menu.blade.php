@@ -4,6 +4,7 @@
 	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-fw fa-tasks icon-black"></i> Proyectos <b class="caret"></b></a>
 	<ul class="dropdown-menu">
 		<li><a href="{{ url('main/realizado') }}"><i class="fa fa-fw fa-tasks icon-black"></i> Realizado</a></li>
+		<li><a href="{{ url('main/isban') }}"><i class="fa fa-fw fa-tasks icon-black"></i> AT ISBAN</a></li>
 		@if (Sentry::user()->has_access('factory'))
 		<li><a href="{{ url('main/factory') }}"><i class="fa fa-fw fa-table icon-black"></i> Software Factory</a></li>
 		@endif

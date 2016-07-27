@@ -179,6 +179,7 @@ class Main_Controller extends Base_Controller {
 			'periodos' => Periodo::get(),
 			'clientes' => $clientes,
 			'title'=>'Pre-facturación OLGA',
+			'urlLoad'=>'/main/clientes/',
 		));
 	}
 
@@ -212,6 +213,20 @@ class Main_Controller extends Base_Controller {
 		return View::make('main.facturacion',array(
 			'clientes' => $clientes,
 			'title'=>'Facturación OLGA + Softland',
+		));
+	}
+
+	/**
+	 * gestión AT Isban
+	 * @return mixed
+	 */
+	public function action_isban() {
+		$periodo=self::get_periodo();
+
+		return View::make('main.isban',array(
+			'periodos' => Periodo::get(),
+			'title'=>'Gestión AT ISBAN',
+			'urlLoad'=>'/isban/',
 		));
 	}
 

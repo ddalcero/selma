@@ -37,8 +37,8 @@ Route::group(array('before' => 'is_admin'), function() {
 		$input=Input::get();
 		return Response::json($input);
 	});
-	Route::any('dtes',function(){
-		return Response::json(Factura::emitidas(4,2015));
+	Route::any('isban',function(){
+		return Response::json(Isban::tarifa(1517));
 	});
 });
 // end testing only
@@ -130,6 +130,9 @@ Route::group(array('before' => 'realizado'), function() {
 	Route::put('solicitud/(:num)',array('uses'=>'solicitud@update'));
 	Route::post('api/auxcli',array('uses'=>'auxcli@auxcli'));
 	Route::get('solicitud/dtes/(:any)',array('uses'=>'solicitud@dtes'));
+	// Isban
+	Route::get('isban/(:num)/(:num)',array('uses'=>'isban@detalle'));
+	Route::post('isban',array('uses'=>'isban@detalle'));
 });
 
 // Gestión Facturación Software Factory

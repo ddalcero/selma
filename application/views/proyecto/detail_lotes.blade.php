@@ -23,7 +23,7 @@
 									{{ Label::success('Emitida') }}
 									{{ Label::normal(ViewFormat::NFL($lote['valor_uf'],2))}}
 								@else
-									@if ($lote['solicitud']<>0)
+									@if ($lote['solicitud'] != 0)
 										{{ Button::mini_info_link('/solicitud/'.$lote['solicitud'],'En curso #'.$lote['solicitud'])}}
 									@else
 										{{ Label::warning('Pendiente')}}
@@ -58,7 +58,9 @@
 			</div>
 		</div>
 		@foreach ($lotes as $lote)
-		@include('plugins/lote_modal')
+			@if (!$lote['fsi_id'])
+				@include('plugins/lote_modal')
+			@endif
 		@endforeach
         @if (isset($spj_id))
     		@include('plugins/lote_ajuste_modal')
