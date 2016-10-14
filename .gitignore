@@ -2,3 +2,5 @@ application/config/application.php
 .idea/.name
 .idea/*
 .idea/dataSources.xml
+application/.DS_Store
+**/.DS_Store
