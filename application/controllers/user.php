@@ -143,6 +143,8 @@ class User_Controller extends Base_Controller {
 
 			if ($input['password']==='' && $input['confirm']==='') {
 				$user_data = array(
+					'username' => $input['username'],
+					'email' => $input['email'],
 					'metadata' => array(
 						'first_name' => $input['first_name'],
 						'last_name'  => $input['last_name'],
@@ -154,6 +156,8 @@ class User_Controller extends Base_Controller {
 			else {
 				$user_data = array(
 					'password' => $input['password'],
+					'username' => $input['username'],
+					'email' => $input['email'],
 					'metadata' => array(
 						'first_name' => $input['first_name'],
 						'last_name'  => $input['last_name'],

@@ -15,6 +15,8 @@
                 {{ Form::horizontal_open() }}
                 @endif
 
+                {{ Form::control_group(Form::label('username', 'Nombre usuario'),Form::text('username', $user->username, array('class' => 'span5', 'placeholder' => 'nombre.usuario')),'') }}
+
                 {{ Form::control_group(Form::label('first_name', 'Nombre'),Form::text('first_name', $metadata->first_name, array('class' => 'span5', 'placeholder' => 'Nombre')),'') }}
                 {{ Form::control_group(Form::label('last_name', 'Apellidos'),Form::text('last_name', $metadata->last_name, array('class' => 'span5', 'placeholder' => 'Apellidos')),'') }}
 

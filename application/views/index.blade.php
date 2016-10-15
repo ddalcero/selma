@@ -6,8 +6,8 @@
         <div class="span5">
             <h1>Bienvenidos...</h1>
             <form class="well" method="POST" action="{{ url('login') }}">
-                <label for="email">Introduce tu e-Mail:</label>
-                <input type="text" placeholder="tu e-mail" name="email" id="email" />
+                <label for="email">Introduce tu nombre de usuario:</label>
+                <input type="text" placeholder="nombre.usuario" name="username" id="username" />
                 <label for="password">Contrase&ntilde;a:</label>
                 <input type="password" placeholder="contrase&ntilde;a" name="password" id="password" />
                 <br />

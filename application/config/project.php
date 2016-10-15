@@ -2,6 +2,6 @@
 
 return array(
     'title' => 'Selma Extranet',
-    'version' => '16.7.27',
+    'version' => '16.10.15',
     'copyright' => 'SII Group Chile',
 );

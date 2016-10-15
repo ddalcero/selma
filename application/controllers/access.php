@@ -14,6 +14,7 @@ class Access_Controller extends Base_Controller {
 			'title'=>'Registro de un nuevo usuario'));
 	}
 
+/* No more password change/update
 	public function get_password() {
 		return View::make('user.password',array(
 			'title'=>'Actualizar contraseña'));
@@ -48,22 +49,18 @@ class Access_Controller extends Base_Controller {
 		}
 		return Redirect::to('main');
 	}
+*/
 
 	public function post_login() {
 		try {
-			$valid_login = Sentry::login(Input::get('email'), Input::get('password'), true);
+			$valid_login = Sentry::login(Input::get('username'), Input::get('password'), true);
 			if ($valid_login) {
 				Return Redirect::to('main');
 			}
+			Session::flash('error','Usuario o contraseña incorrectos.');
 			Return Redirect::to('/'); //->with_errors($errors);
 		}
 		catch (Exception $e) {
-			Session::flash('error','Database no disponible. Error: '.$e->getMessage());
-			Return Redirect::to('login'); //->with_errors($errors);
-		}
-		catch (Sentry\SentryException $e) {
-//			$errors = new Laravel\Messages();
-//			$errors->add('sentry', $e->getMessage());
 			Session::flash('error','Usuario o contraseña incorrectos.');
 			Return Redirect::to('login'); //->with_errors($errors);
 		}
@@ -80,7 +77,7 @@ class Access_Controller extends Base_Controller {
 		try	{
 			//create some validation rules
 			$rules = array(
-			    'email'  => 'required|email|unique:users',
+			    'username'  => 'required|unique:users',
 			    'password' => 'same:confirm'
 				);
 			//validate the inputs

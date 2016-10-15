@@ -981,7 +981,16 @@ class Sentry_User implements \Iterator, \ArrayAccess
 	 */
 	public function check_password($password, $field = 'password')
 	{
-		if ($this->hash->check_password($password, $this->passwords[$field]))
+		// USE ActiveDirectory for the password check?
+		if (Config::get('sentry::sentry.ad.usead') === true) {
+			$ldap = ldap_connect(Config::get('sentry::sentry.ad.adserver'));
+			$ldaprdn = Config::get('sentry::sentry.ad.domain') . "\\" . $this->user['username'];
+			ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION, 3);
+			ldap_set_option($ldap, LDAP_OPT_REFERRALS, 0);
+			$bind = @ldap_bind($ldap, $ldaprdn, $password);
+			if ($bind) return true;
+		}
+		else if ($this->hash->check_password($password, $this->passwords[$field]))
 		{
 			return true;
 		}

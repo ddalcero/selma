@@ -10,9 +10,9 @@
         <p><a href="{{ URL::to_route('user_new') }}" class="btn btn-primary"><i class=""></i> Añadir usuario</a></p>
 
 {{ Table::striped_bordered_hover_condensed_open(array('id'=>'usuarios')) }}
-{{ Table::headers('','Nombre','e-mail','Último login','','') }}
+{{ Table::headers('','Login','Nombre','e-mail','Último login','','') }}
 <?php echo Table::body($users)
-        ->ignore('username','password','password_reset_hash','temp_password','remember_me','activation_hash','ip_address','status','activated','permissions','created_at','updated_at')
+        ->ignore('password','password_reset_hash','temp_password','remember_me','activation_hash','ip_address','status','activated','permissions','created_at','updated_at')
         ->meta(function($user) {
             $meta=User::find($user['id'])->metadata()->first(); 
             return $meta->first_name.' '.$meta->last_name;
@@ -26,9 +26,9 @@
         ->delete(function($user) {
             return HTML::link_to_route('user_delete', 'Eliminar', array($user['id']), array('data-method' => 'delete'));
         })
-        ->order('id','meta','email','last_login','edit','delete');
+        ->order('id','username','meta','email','last_login','edit','delete');
 ?>
-{{ Table::footers('','Nombre','e-mail','','','') }}
+{{ Table::footers('','Login','Nombre','e-mail','','','') }}
 {{ Table::close() }}
 
     </div>

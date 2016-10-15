@@ -28,6 +28,18 @@ return array(
 	'db_instance' => null,
 
 	/*
+	 * Active Directory Server and Domain
+	 * usead = true, will use AD for password check
+	 * adserver = ldap server to use
+	 * domain = domain name (will add a backslash before the username) eg. domain\username
+	 */
+	'ad' => array(
+		'usead' => true,
+		'adserver' => 'ldap://10.247.1.58',
+		'domain' => 'santiago',
+	),
+
+	/*
 	 * Table Names
 	 */
 	'table' => array(
@@ -50,7 +62,7 @@ return array(
 	/*
 	 * Default Authorization Column - username or email
 	 */
-	'login_column' => 'email',
+	'login_column' => 'username',
 
 	/*
 	 * Remember Me settings

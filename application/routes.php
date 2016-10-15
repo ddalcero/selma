@@ -62,8 +62,8 @@ Route::post('login', array('uses'=>'access@login'));
 //Route::post('register', array('uses'=>'access@register'));
 
 Route::group(array('before' => 'sentry'), function() {
-	Route::get('password', array('uses'=>'access@password'));
-	Route::put('password', array('uses'=>'access@password'));
+	// Route::get('password', array('uses'=>'access@password'));
+	// Route::put('password', array('uses'=>'access@password'));
 	// UfDia
 	Route::get('ufdia/(:num?)/(:num?)/(:num?)',array('uses'=>'ufdia@uf')); 
 });
