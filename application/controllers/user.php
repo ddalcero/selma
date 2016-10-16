@@ -222,7 +222,7 @@ class User_Controller extends Base_Controller {
 				$user_data = array(
 					'password' => $input['password'],
 					'email' => $input['email'],
-					'username' => $input['email'],
+					'username' => $input['username'],
 					'metadata' => array(
 					'first_name' => $input['first_name'],
 					'last_name'  => $input['last_name'],
